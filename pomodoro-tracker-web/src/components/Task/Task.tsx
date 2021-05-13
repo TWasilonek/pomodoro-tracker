@@ -1,12 +1,30 @@
+import { useEffect, useState } from "react";
+import { formatDateToHoursAndMinutes } from "../../utils/timeUtils";
 
-const Task = () => {
+interface Props {
+  category?: string;
+  description: string;
+  numberOfPomodoros: number;
+  pomodoroTimeInMilliseconds: number;
+  numberOfPrecedingPomodors?: number; 
+}
+
+const Task: React.FC<Props> = ({ category, description, numberOfPomodoros, pomodoroTimeInMilliseconds, numberOfPrecedingPomodors = 0 }) => {
+  const [endTime, setEndTIme] = useState(new Date());
+  useEffect(() => {
+    // TODO: calculate end time from remaining pomodoros * pomodoroTime
+    const precedingTime = numberOfPrecedingPomodors * pomodoroTimeInMilliseconds;
+    const endingTimeFromNow = new Date(Date.now() + precedingTime + numberOfPomodoros * pomodoroTimeInMilliseconds);
+    setEndTIme(endingTimeFromNow);
+  }, [numberOfPomodoros, pomodoroTimeInMilliseconds, numberOfPrecedingPomodors]);
+
   return (
     <>
-      <p>Job</p>
-      <p>Create quarterly sales report</p>
+      <p>{category || ""}</p>
+      <p>{description}</p>
       <div>
-        <p>07:20 PM</p>
-        <button>2</button>
+        <p>{formatDateToHoursAndMinutes(endTime)}</p>
+        <button>{numberOfPomodoros}</button>
         <div>
           <button>...</button>
           <div>

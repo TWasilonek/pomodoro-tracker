@@ -9,11 +9,11 @@ interface Props {
   taskTime?: number;
   shortBreakTime?: number;
   longBreakTime?: number;
-  taskName: string;
+  taskDescription: string;
 }
 
 const Timer: React.FC<Props> = ({
-  taskName = "",
+  taskDescription: taskName = "",
   taskTime = DEFAULT_TASK_TIME,
   shortBreakTime = DEFAULT_SHORT_BREAK_TIME,
   longBreakTime = DEFAULT_LONG_BREAK_TIME,

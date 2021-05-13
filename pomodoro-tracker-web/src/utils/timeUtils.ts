@@ -17,3 +17,9 @@ export function formatMillisToHoursAndMins(milliseconds: number) {
     ? hours + 1 + "h 00m"
     : hours + "h " + minutes.toFixed(0) + (minutes < 10 ? "0m" : "m");
 }
+
+export function formatDateToHoursAndMinutes(date: Date) {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  return `${hours}:${minutes}`;
+}

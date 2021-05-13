@@ -16,7 +16,21 @@ const TasksList = () => {
 
       <ul>
         <li>
-          <Task />
+          <Task 
+            category="Job"
+            description="Create quarterly sales report"
+            numberOfPomodoros={2}
+            pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
+          />
+        </li>
+        <li>
+          <Task 
+            category="School"
+            description="Do Maths homework"
+            numberOfPomodoros={3}
+            pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
+            numberOfPrecedingPomodors={2}
+          />
         </li>
       </ul>
 
