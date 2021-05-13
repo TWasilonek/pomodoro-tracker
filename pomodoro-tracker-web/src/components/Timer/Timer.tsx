@@ -44,7 +44,7 @@ const Timer: React.FC<Props> = ({
     setCounting(false);
   }, []);
 
-  return <header className="App-header">
+  return <header className="timer">
     <p>{formatMillisToTimer(counter)}</p>
     <p>{taskName}</p>
     <div>
