@@ -1,4 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
+import { formatMillisToTimer, getMillisFromMinutes } from "../../utils/timeUtils";
+
+const DEFAULT_TASK_TIME = getMillisFromMinutes(25);
+const DEFAULT_SHORT_BREAK_TIME = getMillisFromMinutes(5);
+const DEFAULT_LONG_BREAK_TIME = getMillisFromMinutes(15);
 
 interface Props {
   taskTime?: number;
@@ -6,22 +11,6 @@ interface Props {
   longBreakTime?: number;
   taskName: string;
 }
-
-function getMillisFromMinutes(mins: number) {
-  return mins * 60 * 1000;
-}
-
-function formatMillisToTimer(milliseconds: number) {
-  const minutes = Math.floor(milliseconds / 60000);
-  const seconds = (milliseconds % 60000) / 1000;
-  return seconds === 60
-    ? minutes + 1 + ":00"
-    : minutes + ":" + (seconds < 10 ? "0" : "") + seconds.toFixed(0);
-}
-
-const DEFAULT_TASK_TIME = getMillisFromMinutes(25);
-const DEFAULT_SHORT_BREAK_TIME = getMillisFromMinutes(5);
-const DEFAULT_LONG_BREAK_TIME = getMillisFromMinutes(15);
 
 const Timer: React.FC<Props> = ({
   taskName = "",
@@ -40,7 +29,7 @@ const Timer: React.FC<Props> = ({
     }, 1000);
 
     return () => clearInterval(interval);
-  });
+  }, [counting]);
 
   const startTimer = useCallback(() => {
     setCounting(true);
