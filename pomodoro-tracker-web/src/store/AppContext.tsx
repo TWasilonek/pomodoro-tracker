@@ -1,8 +1,8 @@
-import React, { createContext, FunctionComponent, useReducer } from "react";
-import { Task, TasksActions, tasksReducer } from "./Tasks/Tasks.reducers";
+import React, { createContext, FunctionComponent, useReducer } from 'react';
+import { Task, TasksActions, tasksReducer } from './Tasks/Tasks.reducers';
 
 export interface InitialStateType {
-  tasks: Task[],
+  tasks: Task[];
 }
 
 // type InitialStateType =  {
@@ -17,26 +17,26 @@ export interface InitialStateType {
 export const initialState: InitialStateType = {
   tasks: [
     {
-      id: "1",
+      id: '1',
       category: 'test',
       description: 'test',
       pomodoroCount: 3,
     },
     {
-      id: "2",
+      id: '2',
       category: 'test 2',
       description: 'test 2',
       pomodoroCount: 1,
     },
   ],
-}
+};
 
 const AppContext = createContext<{
   state: InitialStateType;
   dispatch: React.Dispatch<TasksActions>;
 }>({
   state: initialState,
-  dispatch: () => null
+  dispatch: () => null,
 });
 
 const mainReducer = ({ tasks }: InitialStateType, action: TasksActions) => ({
@@ -47,12 +47,10 @@ const AppProvider: FunctionComponent = ({ children }) => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
 
   return (
-    <AppContext.Provider value={{state, dispatch}}>
+    <AppContext.Provider value={{ state, dispatch }}>
       {children}
     </AppContext.Provider>
   );
-}
+};
 
 export { AppContext, AppProvider };
-
-
