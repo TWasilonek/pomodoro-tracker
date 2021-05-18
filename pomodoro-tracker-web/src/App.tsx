@@ -1,14 +1,17 @@
 import React from 'react';
 import './App.css';
-import TasksList from './components/TasksList';
+import TasksList from './components/Tasks/TasksList';
 import Timer from './components/Timer';
+import { AppProvider } from './store/AppContext';
 
 function App() {
   return (
-    <div className="App">
-      <Timer taskDescription=""/>
-      <TasksList />
-    </div>
+    <AppProvider>
+      <div className="App">
+        <Timer taskDescription=""/>
+        <TasksList />
+      </div>
+    </AppProvider>
   );
 }
 
