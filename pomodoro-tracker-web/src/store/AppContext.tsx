@@ -21,12 +21,14 @@ export const initialState: InitialStateType = {
       category: 'test',
       description: 'test',
       pomodoroCount: 3,
+      completed: false,
     },
     {
       id: '2',
       category: 'test 2',
       description: 'test 2',
       pomodoroCount: 1,
+      completed: false,
     },
   ],
 };

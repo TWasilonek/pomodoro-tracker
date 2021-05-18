@@ -10,14 +10,33 @@ import { Task, TASK_ACTIONS } from '../../store/Tasks/Tasks.reducers';
 
 const Tasks = () => {
   const { state, dispatch } = useContext(AppContext);
+  const [todoPomodorosCount, setTodoPomodorosCount] = useState(0);
+  const [completedPomodorosCount, setCompletedPomodorosCount] = useState(0);
+  const [todoTasks, setTodoTasks] = useState<Task[]>([]);
+  const [completedTasks, setCompletedTasks] = useState<Task[]>([]);
 
-  const [pomodorosCount, setPomodorosCount] = useState(0);
   useEffect(() => {
-    const count = state.tasks.reduce(
-      (total, task) => total + task.pomodoroCount,
-      0
-    );
-    setPomodorosCount(count);
+    let todoCount = 0;
+    let completedCount = 0;
+
+    state.tasks.forEach((task: Task) => {
+      if (task.completed) {
+        completedCount += task.pomodoroCount;
+      } else {
+        todoCount += task.pomodoroCount;
+      }
+    });
+
+    setTodoPomodorosCount(todoCount);
+    setCompletedPomodorosCount(completedCount);
+  }, [state.tasks]);
+
+  useEffect(() => {
+    const completed = state.tasks.filter((task) => task.completed);
+    const todo = state.tasks.filter((task) => !task.completed);
+
+    setCompletedTasks(completed);
+    setTodoTasks(todo);
   }, [state.tasks]);
 
   const handleAddTask = useCallback(
@@ -27,6 +46,7 @@ const Tasks = () => {
         category,
         description,
         pomodoroCount: 1,
+        completed: false,
       };
 
       dispatch({
@@ -41,11 +61,17 @@ const Tasks = () => {
     <>
       <Heading
         text="Tasks"
-        numberOfPomodoros={pomodorosCount}
+        numberOfPomodoros={todoPomodorosCount}
         pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
       />
       <AddTaskForm onSubmit={handleAddTask} />
-      <TasksList tasks={state.tasks} />
+      {todoTasks.length > 0 && <TasksList tasks={todoTasks} />}
+      <Heading
+        text="Done"
+        numberOfPomodoros={completedPomodorosCount}
+        pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
+      />
+      {completedTasks.length > 0 && <TasksList tasks={completedTasks} />}
     </>
   );
 };

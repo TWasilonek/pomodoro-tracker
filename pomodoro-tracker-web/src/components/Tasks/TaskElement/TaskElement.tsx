@@ -39,6 +39,20 @@ const TaskElement: React.FC<Props> = ({
     });
   }, [dispatch, task.id]);
 
+  const handleDeletePomodoroClick = useCallback(() => {
+    dispatch({
+      type: TASK_ACTIONS.DELETE_POMODORO,
+      payload: { id: task.id },
+    });
+  }, [dispatch, task.id]);
+
+  const handleDeleteTaskClick = useCallback(() => {
+    dispatch({
+      type: TASK_ACTIONS.DELETE_TASK,
+      payload: { id: task.id },
+    });
+  }, [dispatch, task.id]);
+
   return (
     <>
       <p>{task.category || ''}</p>
@@ -53,10 +67,14 @@ const TaskElement: React.FC<Props> = ({
           <div>
             <ul>
               <li>
-                <button type="button">+ Add another pomodoro</button>
+                <button type="button" onClick={handleAddPomodoroClick}>
+                  + Add another pomodoro
+                </button>
               </li>
               <li>
-                <button type="button">- Delete one pomodoro</button>
+                <button type="button" onClick={handleDeletePomodoroClick}>
+                  - Delete one pomodoro
+                </button>
               </li>
               <li>
                 <button type="button">V Set as completed</button>
@@ -65,7 +83,9 @@ const TaskElement: React.FC<Props> = ({
                 <button type="button">Edit</button>
               </li>
               <li>
-                <button type="button">Delete</button>
+                <button type="button" onClick={handleDeleteTaskClick}>
+                  Delete
+                </button>
               </li>
             </ul>
           </div>

@@ -5,6 +5,7 @@ export interface Task {
   description: string;
   category?: string;
   pomodoroCount: number;
+  completed: boolean;
 }
 
 export enum TASK_ACTIONS {
@@ -26,41 +27,56 @@ type TasksPayload = {
 export type TasksActions =
   ActionMap<TasksPayload>[keyof ActionMap<TasksPayload>];
 
+const addTask = (state: Task[], task: Task) => [
+  ...state,
+  {
+    id: task.id,
+    description: task.description,
+    category: task.category,
+    pomodoroCount: task.pomodoroCount,
+    completed: task.completed,
+  },
+];
+
+const deleteTask = (state: Task[], id: string) => [
+  ...state.filter((task) => task.id !== id),
+];
+
+const addPomodoro = (state: Task[], id: string) =>
+  state.map((task) => {
+    if (task.id === id) {
+      return {
+        ...task,
+        pomodoroCount: task.pomodoroCount + 1,
+      };
+    }
+    return task;
+  });
+
+const removePmodoro = (state: Task[], id: string) =>
+  state.map((task) => {
+    if (task.id === id) {
+      const newPomodoroCount = task.pomodoroCount - 1;
+      return {
+        ...task,
+        pomodoroCount: newPomodoroCount,
+        completed: newPomodoroCount <= 0,
+      };
+    }
+    return task;
+  });
+
 export const tasksReducer = (state: Task[], action: TasksActions) => {
   switch (action.type) {
     case TASK_ACTIONS.ADD_TASK:
     case TASK_ACTIONS.UPDATE_TASK:
-      return [
-        ...state,
-        {
-          id: action.payload.id,
-          description: action.payload.description,
-          category: action.payload.category,
-          pomodoroCount: action.payload.pomodoroCount,
-        },
-      ];
+      return addTask(state, action.payload);
     case TASK_ACTIONS.DELETE_TASK:
-      return [...state.filter((task) => task.id !== action.payload.id)];
+      return deleteTask(state, action.payload.id);
     case TASK_ACTIONS.ADD_POMODORO:
-      return state.map((task) => {
-        if (task.id === action.payload.id) {
-          return {
-            ...task,
-            pomodoroCount: task.pomodoroCount + 1,
-          };
-        }
-        return task;
-      });
+      return addPomodoro(state, action.payload.id);
     case TASK_ACTIONS.DELETE_POMODORO:
-      return state.map((task) => {
-        if (task.id === action.payload.id) {
-          return {
-            ...task,
-            pomodoroCount: task.pomodoroCount - 1,
-          };
-        }
-        return task;
-      });
+      return removePmodoro(state, action.payload.id);
     default:
       return state;
   }
