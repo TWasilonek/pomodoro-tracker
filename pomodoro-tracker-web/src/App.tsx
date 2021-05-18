@@ -8,7 +8,7 @@ function App() {
   return (
     <AppProvider>
       <div className="App">
-        <Timer taskDescription=""/>
+        <Timer taskDescription="" />
         <Tasks />
       </div>
     </AppProvider>

@@ -21,7 +21,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "format": "prettier --write src/**/*.ts{,x}",
-    "lint": "tsc --noEmit && eslint src/**/*.ts{,x}"
+    "lint": "tsc --noEmit && npx eslint src/**/*",
+    "lint-fix": "tsc --noEmit && npx eslint --fix src/**/*"
   },
   "prettier": {
     "singleQuote": true

@@ -1,11 +1,10 @@
-
 const AddTaskForm = () => {
   return (
     <>
       <form>
         <input type="text" placeholder="Category" />
         <input type="text" placeholder="Task description" />
-        <input type="submit" value="+"/>
+        <input type="submit" value="+" />
       </form>
     </>
   );

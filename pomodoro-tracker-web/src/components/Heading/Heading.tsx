@@ -1,4 +1,4 @@
-import { formatMillisToHoursAndMins } from "../../utils/timeUtils";
+import { formatMillisToHoursAndMins } from '../../utils/timeUtils';
 
 interface Props {
   text: string;
@@ -6,9 +6,16 @@ interface Props {
   pomodoroTimeInMilliseconds: number;
 }
 
-const Heading: React.FC<Props> = ({ text, numberOfPomodoros, pomodoroTimeInMilliseconds: pomodoroTime }) => (
+const Heading: React.FC<Props> = ({
+  text,
+  numberOfPomodoros,
+  pomodoroTimeInMilliseconds: pomodoroTime,
+}) => (
   <h2>
-    {text} : {numberOfPomodoros} <span>/ {formatMillisToHoursAndMins(numberOfPomodoros * pomodoroTime)}</span>
+    {text} : {numberOfPomodoros}{' '}
+    <span>
+      / {formatMillisToHoursAndMins(numberOfPomodoros * pomodoroTime)}
+    </span>
   </h2>
 );
 

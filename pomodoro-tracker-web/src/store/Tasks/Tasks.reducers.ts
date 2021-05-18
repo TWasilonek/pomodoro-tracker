@@ -1,4 +1,4 @@
-import { ActionMap } from "../../types";
+import { ActionMap } from '../../types';
 
 export interface Task {
   id: string;
@@ -20,10 +20,11 @@ type TasksPayload = {
   [TASK_ACTIONS.UPDATE_TASK]: Task;
   [TASK_ACTIONS.DELETE_TASK]: { id: string };
   [TASK_ACTIONS.ADD_POMODORO]: { id: string };
-  [TASK_ACTIONS.DELETE_POMODORO]: { id: string }; 
-}
+  [TASK_ACTIONS.DELETE_POMODORO]: { id: string };
+};
 
-export type TasksActions = ActionMap<TasksPayload>[keyof ActionMap<TasksPayload>];
+export type TasksActions =
+  ActionMap<TasksPayload>[keyof ActionMap<TasksPayload>];
 
 export const tasksReducer = (state: Task[], action: TasksActions) => {
   switch (action.type) {
@@ -39,11 +40,9 @@ export const tasksReducer = (state: Task[], action: TasksActions) => {
         },
       ];
     case TASK_ACTIONS.DELETE_TASK:
-      return [
-        ...state.filter(task => task.id !== action.payload.id),
-      ];
+      return [...state.filter((task) => task.id !== action.payload.id)];
     case TASK_ACTIONS.ADD_POMODORO:
-      return state.map(task => {
+      return state.map((task) => {
         if (task.id === action.payload.id) {
           return {
             ...task,
@@ -53,7 +52,7 @@ export const tasksReducer = (state: Task[], action: TasksActions) => {
         return task;
       });
     case TASK_ACTIONS.DELETE_POMODORO:
-      return state.map(task => {
+      return state.map((task) => {
         if (task.id === action.payload.id) {
           return {
             ...task,
@@ -65,4 +64,4 @@ export const tasksReducer = (state: Task[], action: TasksActions) => {
     default:
       return state;
   }
-}
+};
