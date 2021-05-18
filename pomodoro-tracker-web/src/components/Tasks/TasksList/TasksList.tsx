@@ -1,29 +1,33 @@
-import { useCallback, useContext } from "react";
-import { AppContext } from "../../../store/AppContext";
-import { getMillisFromMinutes } from "../../../utils/timeUtils";
-import TaskElement from "../TaskElement/TaskElement"
+import { FunctionComponent, useCallback } from 'react';
+import { getMillisFromMinutes } from '../../../utils/timeUtils';
+import TaskElement from '../TaskElement/TaskElement';
 import { Task } from '../../../store/Tasks/Tasks.reducers';
 
-const TasksList = () => {
-  const { state } = useContext(AppContext);
+interface Props {
+  tasks: Task[];
+}
 
-  const getNumberOfPreceedingPomodoros = useCallback((task: Task) => {
-    let count = 0;
+const TasksList: FunctionComponent<Props> = ({ tasks }) => {
+  const getNumberOfPreceedingPomodoros = useCallback(
+    (task: Task) => {
+      let count = 0;
 
-    for (let i = 0; i < state.tasks.length; i++) {
-      const current = state.tasks[i];
-      if (current.id === task.id) {
-        break;
+      for (let i = 0; i < tasks.length; i++) {
+        const current = tasks[i];
+        if (current.id === task.id) {
+          break;
+        }
+        count += current.pomodoroCount;
       }
-      count = count + current.pomodoroCount;
-    }
 
-    return count;
-  }, [state.tasks]);
+      return count;
+    },
+    [tasks]
+  );
 
   return (
     <ul>
-      {state.tasks.map(task => (
+      {tasks.map((task) => (
         <li key={task.id}>
           <TaskElement
             task={task}
@@ -31,7 +35,6 @@ const TasksList = () => {
             pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
           />
         </li>
-         
       ))}
     </ul>
   );

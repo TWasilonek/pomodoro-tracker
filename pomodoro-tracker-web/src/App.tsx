@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import TasksList from './components/Tasks/TasksList';
+import Tasks from './components/Tasks';
 import Timer from './components/Timer';
 import { AppProvider } from './store/AppContext';
 
@@ -9,7 +9,7 @@ function App() {
     <AppProvider>
       <div className="App">
         <Timer taskDescription=""/>
-        <TasksList />
+        <Tasks />
       </div>
     </AppProvider>
   );

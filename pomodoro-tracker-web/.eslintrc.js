@@ -31,6 +31,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     'no-use-before-define': 'off',
     'no-shadow': 'off',
+    'no-plusplus': 'off',
     'prefer-template': 'off',
     'import/prefer-default-export': 'off',
     'import/extensions': [
