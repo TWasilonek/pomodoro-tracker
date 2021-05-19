@@ -12,7 +12,7 @@ const DEFAULT_LONG_BREAK_TIME = getMillisFromMinutes(15);
 
 const Wrapper = styled.header`
   background-color: ${COLORS.TOMATO};
-  padding: 60px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;

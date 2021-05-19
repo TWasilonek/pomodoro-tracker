@@ -1,3 +1,8 @@
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -15,4 +20,17 @@ code {
 p {
   margin-block-start: 0;
   margin-block-end: 0;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #CDCFD2;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #CDCFD2;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #CDCFD2;
 }
