@@ -5,15 +5,6 @@ export interface InitialStateType {
   tasks: Task[];
 }
 
-// type InitialStateType =  {
-//   tasks: [],
-//   // addTask: (task: Task) => {},
-//   // removeTask: (task: Task) => {},
-//   // updateTask: (task: Task) => {},
-//   // addPomodoro: (taskId: string) => {},
-//   // removePomodoro: (taskId: string) => {},
-// }
-
 export const initialState: InitialStateType = {
   tasks: [
     {
