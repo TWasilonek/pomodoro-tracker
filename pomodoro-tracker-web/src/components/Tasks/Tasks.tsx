@@ -6,7 +6,7 @@ import { getMillisFromMinutes } from '../../utils/timeUtils';
 import AddTaskForm from './AddTaskForm';
 import Heading from '../Heading';
 import TasksList from './TasksList';
-import { Task, TASK_ACTIONS } from '../../store/Tasks/Tasks.reducers';
+import { Task, TASK_ACTIONS } from '../../store/Tasks.reducers';
 
 const Tasks = () => {
   const { state, dispatch } = useContext(AppContext);

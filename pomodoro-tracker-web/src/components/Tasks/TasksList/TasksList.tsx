@@ -1,7 +1,7 @@
 import { FunctionComponent, useCallback } from 'react';
 import { getMillisFromMinutes } from '../../../utils/timeUtils';
 import TaskElement from '../TaskElement/TaskElement';
-import { Task } from '../../../store/Tasks/Tasks.reducers';
+import { Task } from '../../../store/Tasks.reducers';
 
 interface Props {
   tasks: Task[];

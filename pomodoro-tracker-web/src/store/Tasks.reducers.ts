@@ -1,4 +1,4 @@
-import { ActionMap } from '../../types';
+import { ActionMap } from '../types';
 
 export interface Task {
   id: string;

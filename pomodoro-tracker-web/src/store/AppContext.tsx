@@ -1,5 +1,5 @@
 import React, { createContext, FunctionComponent, useReducer } from 'react';
-import { Task, TasksActions, tasksReducer } from './Tasks/Tasks.reducers';
+import { Task, TasksActions, tasksReducer } from './Tasks.reducers';
 
 export interface InitialStateType {
   tasks: Task[];

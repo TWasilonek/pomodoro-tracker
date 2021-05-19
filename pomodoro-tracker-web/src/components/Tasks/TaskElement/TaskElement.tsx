@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../../store/AppContext';
-import { Task, TASK_ACTIONS } from '../../../store/Tasks/Tasks.reducers';
+import { Task, TASK_ACTIONS } from '../../../store/Tasks.reducers';
 import { formatDateToHoursAndMinutes } from '../../../utils/timeUtils';
 
 interface Props {
