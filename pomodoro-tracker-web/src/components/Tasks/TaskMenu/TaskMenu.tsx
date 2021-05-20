@@ -1,41 +1,17 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { FiPlus } from 'react-icons/fi';
+import { FiCheck, FiEdit, FiMinus, FiPlus, FiTrash } from 'react-icons/fi';
 
 import { AppContext } from '../../../store/AppContext';
 import { Task, TASK_ACTIONS } from '../../../store/Tasks.reducers';
-import { formatDateToHoursAndMinutes } from '../../../utils/timeUtils';
 import { COLORS } from '../../../constants/colors';
 import Button from '../../../UI/Button';
+import useOnOutsideClick from '../../../hooks/useOnOutsideClick';
 
 const BTN_HEIGHT = 35;
 
-interface StyledProps {
-  flex?: number;
-}
-
 const Wrapper = styled.div`
   position: relative;
-`;
-
-const Element = styled.p`
-  display: flex;
-  align-items: center;
-  flex: ${(props: StyledProps) => props.flex};
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: 21px;
-
-  &:not(:last-child) {
-    margin-right: 30px;
-  }
-`;
-
-const PomodorsButton = styled(Button)`
-  width: 48px;
-  height: 48px;
-  border-radius: 100%;
-  cursor: pointer;
 `;
 
 const MoreButton = styled(Button)`
@@ -51,7 +27,7 @@ const PopupMenuWrapper = styled.div`
   bottom: ${BTN_HEIGHT + 2}px;
   border: 2px solid ${COLORS.BLUE_GREYISH};
   border-radius: 5px;
-  width: 200px;
+  width: 300px;
 `;
 
 const Menu = styled.ul`
@@ -71,12 +47,15 @@ const MenuItem = styled.li`
 `;
 
 const MenuItemButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
   background: #fff;
   color: ${COLORS.TEXT};
   border: none;
   cursor: pointer;
-  text-align: left;
+  font-size: 16px;
 
   &:hover,
   &:active {
@@ -89,8 +68,11 @@ interface Props {
 }
 
 const TaskMenu: React.FC<Props> = ({ task }) => {
+  const wrapperRef = useRef(null);
   const { dispatch } = useContext(AppContext);
   const [isOpen, setIsOpen] = useState(false);
+
+  useOnOutsideClick(wrapperRef, () => setIsOpen(false));
 
   const handleTriggerButtonClick = useCallback(() => {
     setIsOpen(!isOpen);
@@ -118,7 +100,7 @@ const TaskMenu: React.FC<Props> = ({ task }) => {
   }, [dispatch, task.id]);
 
   return (
-    <Wrapper>
+    <Wrapper ref={wrapperRef}>
       <MoreButton type="button" onClick={handleTriggerButtonClick}>
         ...
       </MoreButton>
@@ -127,23 +109,27 @@ const TaskMenu: React.FC<Props> = ({ task }) => {
           <Menu>
             <MenuItem>
               <MenuItemButton type="button" onClick={handleAddPomodoroClick}>
-                + Add another pomodoro
+                Add another pomodoro <FiPlus />
               </MenuItemButton>
             </MenuItem>
             <MenuItem>
               <MenuItemButton type="button" onClick={handleDeletePomodoroClick}>
-                - Delete one pomodoro
+                Delete one pomodoro <FiMinus />
               </MenuItemButton>
             </MenuItem>
             <MenuItem>
-              <MenuItemButton type="button">V Set as completed</MenuItemButton>
+              <MenuItemButton type="button">
+                Set as completed <FiCheck />
+              </MenuItemButton>
             </MenuItem>
             <MenuItem>
-              <MenuItemButton type="button">Edit</MenuItemButton>
+              <MenuItemButton type="button">
+                Edit <FiEdit />
+              </MenuItemButton>
             </MenuItem>
             <MenuItem>
               <MenuItemButton type="button" onClick={handleDeleteTaskClick}>
-                Delete
+                Delete <FiTrash />
               </MenuItemButton>
             </MenuItem>
           </Menu>
