@@ -7,14 +7,20 @@ import { formatDateToHoursAndMinutes } from '../../../utils/timeUtils';
 import Button from '../../../UI/Button';
 import TaskMenu from '../TaskMenu';
 import EditTaskForm from '../AddTaskForm';
+import { COLORS } from '../../../constants/colors';
 
 interface StyledProps {
   flex?: number;
 }
 
 const Wrapper = styled.div`
+  margin-top: 10px;
+`;
+
+const TaskWrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 10px;
 `;
 
 const Element = styled.p`
@@ -31,10 +37,18 @@ const Element = styled.p`
 `;
 
 const PomodorsButton = styled(Button)`
+  margin-right: 7px;
   width: 48px;
   height: 48px;
   border-radius: 100%;
   cursor: pointer;
+`;
+
+const Time = styled.p`
+  margin-right: 7px;
+  font-size: 20px;
+  font-weight: 700;
+  color: ${COLORS.TEXT_LIGHT};
 `;
 
 interface Props {
@@ -117,7 +131,7 @@ const TaskElement: React.FC<Props> = ({
   }, [dispatch, task.id]);
 
   return (
-    <>
+    <Wrapper>
       {isEdited ? (
         <EditTaskForm
           data={{
@@ -128,7 +142,7 @@ const TaskElement: React.FC<Props> = ({
           onSubmit={handleSubmitEditedTask}
         />
       ) : (
-        <Wrapper>
+        <TaskWrapper>
           <Element flex={3}>{task.category || ''}</Element>
           <Element flex={7}>{task.description}</Element>
           <Element flex={2}>
@@ -138,7 +152,7 @@ const TaskElement: React.FC<Props> = ({
               </PomodorsButton>
             ) : (
               <>
-                <p>{formatDateToHoursAndMinutes(endTime)}</p>
+                <Time>{formatDateToHoursAndMinutes(endTime)}</Time>
                 <PomodorsButton type="button" onClick={handleAddPomodoroClick}>
                   {task.pomodoroCount}
                 </PomodorsButton>
@@ -152,9 +166,9 @@ const TaskElement: React.FC<Props> = ({
               </>
             )}
           </Element>
-        </Wrapper>
+        </TaskWrapper>
       )}
-    </>
+    </Wrapper>
   );
 };
 

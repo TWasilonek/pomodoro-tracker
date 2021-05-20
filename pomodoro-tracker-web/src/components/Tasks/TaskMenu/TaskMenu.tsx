@@ -1,9 +1,8 @@
-import { useCallback, useContext, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FiCheck, FiEdit, FiMinus, FiPlus, FiTrash } from 'react-icons/fi';
+import { BsThreeDots } from 'react-icons/bs';
 
-import { AppContext } from '../../../store/AppContext';
-import { Task, TASK_ACTIONS } from '../../../store/Tasks.reducers';
 import { COLORS } from '../../../constants/colors';
 import Button from '../../../UI/Button';
 import useOnOutsideClick from '../../../hooks/useOnOutsideClick';
@@ -33,6 +32,7 @@ const PopupMenuWrapper = styled.div`
 const Menu = styled.ul`
   list-style: none;
   padding-left: 0;
+  margin: 0;
 `;
 
 const MenuItem = styled.li`
@@ -90,7 +90,7 @@ const TaskMenu: React.FC<Props> = ({
   return (
     <Wrapper ref={wrapperRef}>
       <MoreButton type="button" onClick={handleTriggerButtonClick}>
-        ...
+        <BsThreeDots size="30px" />
       </MoreButton>
       {isOpen && (
         <PopupMenuWrapper>

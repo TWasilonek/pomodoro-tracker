@@ -1,7 +1,14 @@
 import { FunctionComponent, useCallback } from 'react';
+import styled from 'styled-components';
+
 import { getMillisFromMinutes } from '../../../utils/timeUtils';
 import TaskElement from '../TaskElement/TaskElement';
 import { Task, TASK_MODES } from '../../../store/Tasks.reducers';
+
+const List = styled.li`
+  list-style: none;
+  padding: 0;
+`;
 
 interface Props {
   tasks: Task[];
@@ -27,7 +34,7 @@ const TasksList: FunctionComponent<Props> = ({ tasks, mode }) => {
   );
 
   return (
-    <ul>
+    <List>
       {tasks.map((task) => (
         <li key={task.id}>
           <TaskElement
@@ -38,7 +45,7 @@ const TasksList: FunctionComponent<Props> = ({ tasks, mode }) => {
           />
         </li>
       ))}
-    </ul>
+    </List>
   );
 };
 
