@@ -5,7 +5,7 @@ import { getMillisFromMinutes } from '../../../utils/timeUtils';
 import TaskElement from '../TaskElement/TaskElement';
 import { Task, TASK_MODES } from '../../../store/Tasks.reducers';
 
-const List = styled.li`
+const List = styled.ul`
   list-style: none;
   padding: 0;
 `;

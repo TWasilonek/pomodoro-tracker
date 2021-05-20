@@ -23,7 +23,7 @@ const TaskWrapper = styled.div`
   margin-top: 10px;
 `;
 
-const Element = styled.p`
+const Element = styled.div`
   display: flex;
   align-items: center;
   flex: ${(props: StyledProps) => props.flex};

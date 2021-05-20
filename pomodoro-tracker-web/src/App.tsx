@@ -1,15 +1,12 @@
-import React from 'react';
 import './App.css';
-import Tasks from './components/Tasks';
-import Timer from './components/Timer';
+import Home from './components/Home';
 import { AppProvider } from './store/AppContext';
 
 function App() {
   return (
     <AppProvider>
       <div className="App">
-        <Timer taskDescription="Learn Programming" />
-        <Tasks />
+        <Home />
       </div>
     </AppProvider>
   );

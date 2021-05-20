@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/colors';
+import { Task } from '../../store/Tasks.reducers';
 import {
   formatMillisToTimer,
   getMillisFromMinutes,
@@ -75,14 +76,16 @@ interface Props {
   taskTime?: number;
   shortBreakTime?: number;
   longBreakTime?: number;
-  taskDescription: string;
+  activeTask: Task | null;
+  onCompleteTaskClick: () => void;
 }
 
 const Timer: React.FC<Props> = ({
-  taskDescription: taskName = '',
+  activeTask,
   taskTime = DEFAULT_TASK_TIME,
   shortBreakTime = DEFAULT_SHORT_BREAK_TIME,
   longBreakTime = DEFAULT_LONG_BREAK_TIME,
+  onCompleteTaskClick,
 }) => {
   const [counter, setCounter] = useState(taskTime);
   const [counting, setCounting] = useState(false);
@@ -98,36 +101,64 @@ const Timer: React.FC<Props> = ({
     return () => clearInterval(interval);
   }, [counting]);
 
-  const startTimer = useCallback(() => {
+  const handleStartTimerClick = useCallback(() => {
     setCounting(true);
   }, []);
 
-  const stopTimer = useCallback(() => {
+  const handleStopTimerClick = useCallback(() => {
     setCounting(false);
     setCounter(taskTime);
   }, [taskTime]);
 
-  const pauseTimer = useCallback(() => {
+  const handlePauseTimerClick = useCallback(() => {
     setCounting(false);
   }, []);
+
+  const handleCompleteTaskClick = useCallback(() => {
+    onCompleteTaskClick();
+    setCounting(false);
+    setCounter(taskTime);
+  }, [onCompleteTaskClick, taskTime]);
 
   return (
     <Wrapper className="timer">
       <Clock>{formatMillisToTimer(counter)}</Clock>
-      <TaskName>{taskName}</TaskName>
+      <TaskName>{activeTask ? activeTask.description : ''}</TaskName>
       <Actions>
         {counting ? (
-          <Button type="button" onClick={pauseTimer}>
+          <Button
+            type="button"
+            onClick={handlePauseTimerClick}
+            disabled={!activeTask}
+          >
             PAUSE
           </Button>
         ) : (
-          <Button type="button" onClick={startTimer}>
+          <Button
+            type="button"
+            onClick={handleStartTimerClick}
+            disabled={!activeTask}
+          >
             START
           </Button>
         )}
-        <Button type="button" onClick={stopTimer}>
-          STOP
-        </Button>
+        {counting ? (
+          <Button
+            type="button"
+            onClick={handleStopTimerClick}
+            disabled={!activeTask}
+          >
+            STOP
+          </Button>
+        ) : (
+          <Button
+            type="button"
+            onClick={handleCompleteTaskClick}
+            disabled={!activeTask}
+          >
+            Complete
+          </Button>
+        )}
       </Actions>
     </Wrapper>
   );
