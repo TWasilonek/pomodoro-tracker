@@ -1,4 +1,4 @@
-import React, {
+import {
   ChangeEvent,
   FunctionComponent,
   SyntheticEvent,
@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import styled from 'styled-components';
-import { FiPlus } from 'react-icons/fi';
+import { FiPlus, FiSave } from 'react-icons/fi';
 import { COLORS } from '../../../constants/colors';
 import Button from '../../../UI/Button';
 
@@ -45,13 +45,19 @@ const SubmitButton = styled(Button)`
   border: 2px solid ${COLORS.BLUE_GREYISH};
 `;
 
+interface EditTaskFormValues {
+  category: string;
+  description: string;
+  id?: string;
+}
 interface Props {
-  onSubmit: (values: { category: string; description: string }) => void;
+  data: EditTaskFormValues;
+  onSubmit: (values: EditTaskFormValues) => void;
 }
 
-const AddTaskForm: FunctionComponent<Props> = ({ onSubmit }) => {
-  const [category, setCategory] = useState('');
-  const [description, setDescription] = useState('');
+const EditTaskForm: FunctionComponent<Props> = ({ data, onSubmit }) => {
+  const [category, setCategory] = useState(data.category);
+  const [description, setDescription] = useState(data.description);
 
   const handleSubmit = useCallback(
     (event: SyntheticEvent) => {
@@ -97,11 +103,11 @@ const AddTaskForm: FunctionComponent<Props> = ({ onSubmit }) => {
           flex={8}
         />
         <SubmitButton type="submit" disabled={!description} flex={1}>
-          <FiPlus size="26px" />
+          {data.id ? <FiSave size="26px" /> : <FiPlus size="26px" />}
         </SubmitButton>
       </Form>
     </>
   );
 };
 
-export default AddTaskForm;
+export default EditTaskForm;

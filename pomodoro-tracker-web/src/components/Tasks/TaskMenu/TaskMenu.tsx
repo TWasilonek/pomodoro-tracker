@@ -64,12 +64,21 @@ const MenuItemButton = styled.button`
 `;
 
 interface Props {
-  task: Task;
+  onEditTaskClick: () => void;
+  onDeleteTaskClick: () => void;
+  onAddPomodoroClick: () => void;
+  onDeletePomodoroClick: () => void;
+  onCompletePomodoroClick: () => void;
 }
 
-const TaskMenu: React.FC<Props> = ({ task }) => {
+const TaskMenu: React.FC<Props> = ({
+  onEditTaskClick,
+  onAddPomodoroClick,
+  onCompletePomodoroClick,
+  onDeletePomodoroClick,
+  onDeleteTaskClick,
+}) => {
   const wrapperRef = useRef(null);
-  const { dispatch } = useContext(AppContext);
   const [isOpen, setIsOpen] = useState(false);
 
   useOnOutsideClick(wrapperRef, () => setIsOpen(false));
@@ -77,34 +86,6 @@ const TaskMenu: React.FC<Props> = ({ task }) => {
   const handleTriggerButtonClick = useCallback(() => {
     setIsOpen(!isOpen);
   }, [isOpen]);
-
-  const handleAddPomodoroClick = useCallback(() => {
-    dispatch({
-      type: TASK_ACTIONS.ADD_POMODORO,
-      payload: { id: task.id },
-    });
-  }, [dispatch, task.id]);
-
-  const handleDeletePomodoroClick = useCallback(() => {
-    dispatch({
-      type: TASK_ACTIONS.DELETE_POMODORO,
-      payload: { id: task.id },
-    });
-  }, [dispatch, task.id]);
-
-  const handleDeleteTaskClick = useCallback(() => {
-    dispatch({
-      type: TASK_ACTIONS.DELETE_TASK,
-      payload: { id: task.id },
-    });
-  }, [dispatch, task.id]);
-
-  const handleSetCompletedClick = useCallback(() => {
-    dispatch({
-      type: TASK_ACTIONS.COMPLETE_POMODORO,
-      payload: { id: task.id },
-    });
-  }, [dispatch, task.id]);
 
   return (
     <Wrapper ref={wrapperRef}>
@@ -115,27 +96,27 @@ const TaskMenu: React.FC<Props> = ({ task }) => {
         <PopupMenuWrapper>
           <Menu>
             <MenuItem>
-              <MenuItemButton type="button" onClick={handleAddPomodoroClick}>
+              <MenuItemButton type="button" onClick={onAddPomodoroClick}>
                 Add another pomodoro <FiPlus />
               </MenuItemButton>
             </MenuItem>
             <MenuItem>
-              <MenuItemButton type="button" onClick={handleDeletePomodoroClick}>
+              <MenuItemButton type="button" onClick={onDeletePomodoroClick}>
                 Delete one pomodoro <FiMinus />
               </MenuItemButton>
             </MenuItem>
             <MenuItem>
-              <MenuItemButton type="button" onClick={handleSetCompletedClick}>
+              <MenuItemButton type="button" onClick={onCompletePomodoroClick}>
                 Set as completed <FiCheck />
               </MenuItemButton>
             </MenuItem>
             <MenuItem>
-              <MenuItemButton type="button">
+              <MenuItemButton type="button" onClick={onEditTaskClick}>
                 Edit <FiEdit />
               </MenuItemButton>
             </MenuItem>
             <MenuItem>
-              <MenuItemButton type="button" onClick={handleDeleteTaskClick}>
+              <MenuItemButton type="button" onClick={onDeleteTaskClick}>
                 Delete <FiTrash />
               </MenuItemButton>
             </MenuItem>

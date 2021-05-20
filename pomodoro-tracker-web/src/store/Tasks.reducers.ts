@@ -10,9 +10,8 @@ export interface Task {
   completedCount: number;
 }
 
-// FIXME: not the best architectural approach.
-// Modes should be decided by components individually based on data.
-// Ex. remove pomororoCount and completedCount, and use instead an array of pomodoros with 'completed' attribute
+// FIXME: easy to read and use but not the best architectural approach in terms of feasibility.
+// Modes might be decided by components individually based on data.
 export enum TASK_MODES {
   COMPLETED = 'completed',
   TODO = 'todo',
@@ -49,6 +48,16 @@ const addTask = (state: Task[], task: Task) => [
     completedCount: task.completedCount,
   },
 ];
+
+const updateTask = (state: Task[], newTask: Task) =>
+  state.map((task) => {
+    if (task.id === newTask.id) {
+      return {
+        ...newTask,
+      };
+    }
+    return task;
+  });
 
 const deleteTask = (state: Task[], id: string) => [
   ...state.filter((task) => task.id !== id),
@@ -92,8 +101,9 @@ const completePomodoro = (state: Task[], id: string) =>
 export const tasksReducer = (state: Task[], action: TasksActions) => {
   switch (action.type) {
     case TASK_ACTIONS.ADD_TASK:
-    case TASK_ACTIONS.UPDATE_TASK:
       return addTask(state, action.payload);
+    case TASK_ACTIONS.UPDATE_TASK:
+      return updateTask(state, action.payload);
     case TASK_ACTIONS.DELETE_TASK:
       return deleteTask(state, action.payload.id);
     case TASK_ACTIONS.ADD_POMODORO:

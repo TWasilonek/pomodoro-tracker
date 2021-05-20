@@ -61,7 +61,10 @@ const Tasks = () => {
         numberOfPomodoros={todoPomodorosCount}
         pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
       />
-      <AddTaskForm onSubmit={handleAddTask} />
+      <AddTaskForm
+        onSubmit={handleAddTask}
+        data={{ category: '', description: '' }}
+      />
       {todoTasks.length > 0 && (
         <TasksList tasks={todoTasks} mode={TASK_MODES.TODO} />
       )}
