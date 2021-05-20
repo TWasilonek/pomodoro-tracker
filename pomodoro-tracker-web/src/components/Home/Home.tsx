@@ -30,11 +30,23 @@ const Home = () => {
     });
   }, [activeTask, dispatch]);
 
+  const handleTaskCounterFinish = useCallback(() => {
+    if (!activeTask) {
+      return;
+    }
+
+    dispatch({
+      type: TASK_ACTIONS.COMPLETE_POMODORO,
+      payload: { id: activeTask.id },
+    });
+  }, [activeTask, dispatch]);
+
   return (
     <div className="App">
       <Timer
         activeTask={activeTask}
         onCompleteTaskClick={handleCompleteTaskClick}
+        onTaskCounterFinish={handleTaskCounterFinish}
       />
       <Tasks />
     </div>

@@ -7,12 +7,21 @@ import {
   getMillisFromMinutes,
 } from '../../utils/timeUtils';
 
-const DEFAULT_TASK_TIME = getMillisFromMinutes(25);
-const DEFAULT_SHORT_BREAK_TIME = getMillisFromMinutes(5);
-const DEFAULT_LONG_BREAK_TIME = getMillisFromMinutes(15);
+const DEFAULT_TASK_TIME = getMillisFromMinutes(0.1);
+const DEFAULT_BREAK_TIME = getMillisFromMinutes(5);
+
+enum TIMER_MODES {
+  TASK = 'TASK',
+  BREAK = 'BREAK',
+}
+
+interface WrapperProps {
+  mode: TIMER_MODES;
+}
 
 const Wrapper = styled.header`
-  background-color: ${COLORS.TOMATO};
+  background-color: ${(props: WrapperProps) =>
+    props.mode === TIMER_MODES.TASK ? COLORS.TOMATO : COLORS.GREEN};
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -74,21 +83,22 @@ const Button = styled.button`
 
 interface Props {
   taskTime?: number;
-  shortBreakTime?: number;
-  longBreakTime?: number;
+  breakTime?: number;
   activeTask: Task | null;
   onCompleteTaskClick: () => void;
+  onTaskCounterFinish: () => void;
 }
 
 const Timer: React.FC<Props> = ({
   activeTask,
   taskTime = DEFAULT_TASK_TIME,
-  shortBreakTime = DEFAULT_SHORT_BREAK_TIME,
-  longBreakTime = DEFAULT_LONG_BREAK_TIME,
+  breakTime = DEFAULT_BREAK_TIME,
   onCompleteTaskClick,
+  onTaskCounterFinish: handleTaskCounterFinish,
 }) => {
   const [counter, setCounter] = useState(taskTime);
   const [counting, setCounting] = useState(false);
+  const [mode, setMode] = useState<TIMER_MODES>(TIMER_MODES.TASK);
 
   useEffect(() => {
     if (!counting) return;
@@ -101,29 +111,52 @@ const Timer: React.FC<Props> = ({
     return () => clearInterval(interval);
   }, [counting]);
 
+  useEffect(() => {
+    if (counter <= 0) {
+      setCounting(false);
+      if (mode === TIMER_MODES.TASK) {
+        handleTaskCounterFinish();
+        setMode(TIMER_MODES.BREAK);
+        setCounter(breakTime);
+        setCounting(true);
+      } else {
+        setMode(TIMER_MODES.TASK);
+        setCounter(taskTime);
+      }
+    }
+  }, [breakTime, counter, handleTaskCounterFinish, mode, taskTime]);
+
   const handleStartTimerClick = useCallback(() => {
     setCounting(true);
   }, []);
-
-  const handleStopTimerClick = useCallback(() => {
-    setCounting(false);
-    setCounter(taskTime);
-  }, [taskTime]);
 
   const handlePauseTimerClick = useCallback(() => {
     setCounting(false);
   }, []);
 
+  const handleStopTimerClick = useCallback(() => {
+    setCounting(false);
+    setCounter(mode === TIMER_MODES.TASK ? taskTime : breakTime);
+  }, [breakTime, mode, taskTime]);
+
   const handleCompleteTaskClick = useCallback(() => {
-    onCompleteTaskClick();
     setCounting(false);
     setCounter(taskTime);
-  }, [onCompleteTaskClick, taskTime]);
+
+    if (mode === TIMER_MODES.TASK) {
+      onCompleteTaskClick();
+    } else {
+      setMode(TIMER_MODES.TASK);
+    }
+  }, [mode, onCompleteTaskClick, taskTime]);
+
+  const taskName =
+    mode === TIMER_MODES.BREAK ? 'Break' : activeTask?.description || '';
 
   return (
-    <Wrapper className="timer">
+    <Wrapper mode={mode}>
       <Clock>{formatMillisToTimer(counter)}</Clock>
-      <TaskName>{activeTask ? activeTask.description : ''}</TaskName>
+      <TaskName>{taskName}</TaskName>
       <Actions>
         {counting ? (
           <Button
@@ -131,7 +164,7 @@ const Timer: React.FC<Props> = ({
             onClick={handlePauseTimerClick}
             disabled={!activeTask}
           >
-            PAUSE
+            Pause
           </Button>
         ) : (
           <Button
@@ -139,7 +172,7 @@ const Timer: React.FC<Props> = ({
             onClick={handleStartTimerClick}
             disabled={!activeTask}
           >
-            START
+            Start
           </Button>
         )}
         {counting ? (
@@ -148,7 +181,7 @@ const Timer: React.FC<Props> = ({
             onClick={handleStopTimerClick}
             disabled={!activeTask}
           >
-            STOP
+            Stop
           </Button>
         ) : (
           <Button
