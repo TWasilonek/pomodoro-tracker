@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/colors';
+import {
+  DEFAULT_BREAK_TIME,
+  DEFAULT_TASK_TIME,
+} from '../../constants/defaults';
 import { Task } from '../../store/Tasks.reducers';
 import {
   formatMillisToTimer,
   getMillisFromMinutes,
 } from '../../utils/timeUtils';
-
-const DEFAULT_TASK_TIME = getMillisFromMinutes(0.1);
-const DEFAULT_BREAK_TIME = getMillisFromMinutes(5);
 
 enum TIMER_MODES {
   TASK = 'TASK',
@@ -91,8 +92,8 @@ interface Props {
 
 const Timer: React.FC<Props> = ({
   activeTask,
-  taskTime = DEFAULT_TASK_TIME,
-  breakTime = DEFAULT_BREAK_TIME,
+  taskTime = getMillisFromMinutes(DEFAULT_TASK_TIME),
+  breakTime = getMillisFromMinutes(DEFAULT_BREAK_TIME),
   onCompleteTaskClick,
   onTaskCounterFinish: handleTaskCounterFinish,
 }) => {

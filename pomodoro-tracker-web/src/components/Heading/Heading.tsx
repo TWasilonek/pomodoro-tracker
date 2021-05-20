@@ -1,6 +1,6 @@
+import formatDuration from 'date-fns/formatDuration';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/colors';
-import { formatMillisToHoursAndMins } from '../../utils/timeUtils';
 
 const Wrapper = styled.h2`
   margin-top: 40px;
@@ -40,25 +40,29 @@ const Time = styled.span`
 interface Props {
   text: string;
   numberOfPomodoros: number;
-  pomodoroTimeInMilliseconds: number;
+  pomodoroTime: number;
 }
 
 const Heading: React.FC<Props> = ({
   text,
   numberOfPomodoros,
-  pomodoroTimeInMilliseconds: pomodoroTime,
-}) => (
-  <Wrapper>
-    <Title>
-      {text} : {numberOfPomodoros}
-    </Title>
-    <Time>
-      /{' '}
-      {numberOfPomodoros > 0
-        ? formatMillisToHoursAndMins(numberOfPomodoros * pomodoroTime)
-        : ''}
-    </Time>
-  </Wrapper>
-);
+  pomodoroTime,
+}) => {
+  const totalMinutes = numberOfPomodoros * pomodoroTime;
+  const hours = Math.floor(totalMinutes / 60);
+  const reminderMinutes = Math.floor(totalMinutes % 60);
+  return (
+    <Wrapper>
+      <Title>
+        {text} : {numberOfPomodoros}
+      </Title>
+      <Time>
+        {numberOfPomodoros > 0
+          ? `/ ${formatDuration({ hours, minutes: reminderMinutes })}`
+          : ''}
+      </Time>
+    </Wrapper>
+  );
+};
 
 export default Heading;

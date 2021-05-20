@@ -2,11 +2,11 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { AppContext } from '../../store/AppContext';
-import { getMillisFromMinutes } from '../../utils/timeUtils';
 import AddTaskForm from './AddTaskForm';
 import Heading from '../Heading';
 import TasksList from './TasksList';
 import { Task, TASK_ACTIONS, TASK_MODES } from '../../store/Tasks.reducers';
+import { DEFAULT_TASK_TIME } from '../../constants/defaults';
 
 const Tasks = () => {
   const { state, dispatch } = useContext(AppContext);
@@ -57,9 +57,9 @@ const Tasks = () => {
   return (
     <>
       <Heading
-        text="Tasks"
+        text="Pomodoros"
         numberOfPomodoros={todoPomodorosCount}
-        pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
+        pomodoroTime={DEFAULT_TASK_TIME}
       />
       <AddTaskForm
         onSubmit={handleAddTask}
@@ -71,7 +71,7 @@ const Tasks = () => {
       <Heading
         text="Done"
         numberOfPomodoros={completedPomodorosCount}
-        pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
+        pomodoroTime={DEFAULT_TASK_TIME}
       />
       {doneTasks.length > 0 && (
         <TasksList tasks={doneTasks} mode={TASK_MODES.COMPLETED} />

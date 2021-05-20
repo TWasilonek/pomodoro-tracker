@@ -1,9 +1,9 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import format from 'date-fns/format';
 
 import { AppContext } from '../../../store/AppContext';
 import { Task, TASK_ACTIONS, TASK_MODES } from '../../../store/Tasks.reducers';
-import { formatDateToHoursAndMinutes } from '../../../utils/timeUtils';
 import Button from '../../../UI/Button';
 import TaskMenu from '../TaskMenu';
 import EditTaskForm from '../AddTaskForm';
@@ -65,7 +65,7 @@ const TaskElement: React.FC<Props> = ({
   numberOfPrecedingPomodors = 0,
 }) => {
   const { dispatch } = useContext(AppContext);
-  const [endTime, setEndTIme] = useState(new Date());
+  const [endTime, setEndTIme] = useState('');
   const [isEdited, setIsEdited] = useState(false);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const TaskElement: React.FC<Props> = ({
         precedingTime +
         task.pomodoroCount * pomodoroTimeInMilliseconds
     );
-    setEndTIme(endingTimeFromNow);
+    setEndTIme(format(endingTimeFromNow, 'kk:mm'));
   }, [
     task.pomodoroCount,
     pomodoroTimeInMilliseconds,
@@ -152,7 +152,7 @@ const TaskElement: React.FC<Props> = ({
               </PomodorsButton>
             ) : (
               <>
-                <Time>{formatDateToHoursAndMinutes(endTime)}</Time>
+                <Time>{endTime}</Time>
                 <PomodorsButton type="button" onClick={handleAddPomodoroClick}>
                   {task.pomodoroCount}
                 </PomodorsButton>
