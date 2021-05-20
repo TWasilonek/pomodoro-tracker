@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { AppContext } from '../../../store/AppContext';
-import { Task, TASK_ACTIONS } from '../../../store/Tasks.reducers';
+import { Task, TASK_ACTIONS, TASK_MODES } from '../../../store/Tasks.reducers';
 import { formatDateToHoursAndMinutes } from '../../../utils/timeUtils';
 import Button from '../../../UI/Button';
 import TaskMenu from '../TaskMenu';
@@ -38,12 +38,14 @@ const PomodorsButton = styled(Button)`
 
 interface Props {
   task: Task;
+  mode: TASK_MODES;
   pomodoroTimeInMilliseconds: number;
   numberOfPrecedingPomodors?: number;
 }
 
 const TaskElement: React.FC<Props> = ({
   task,
+  mode,
   pomodoroTimeInMilliseconds,
   numberOfPrecedingPomodors = 0,
 }) => {
@@ -77,11 +79,19 @@ const TaskElement: React.FC<Props> = ({
       <Element flex={3}>{task.category || ''}</Element>
       <Element flex={7}>{task.description}</Element>
       <Element flex={2}>
-        <p>{formatDateToHoursAndMinutes(endTime)}</p>
-        <PomodorsButton type="button" onClick={handleAddPomodoroClick}>
-          {task.pomodoroCount}
-        </PomodorsButton>
-        <TaskMenu task={task} />
+        {mode === TASK_MODES.COMPLETED ? (
+          <PomodorsButton type="button" disabled>
+            {task.completedCount}
+          </PomodorsButton>
+        ) : (
+          <>
+            <p>{formatDateToHoursAndMinutes(endTime)}</p>
+            <PomodorsButton type="button" onClick={handleAddPomodoroClick}>
+              {task.pomodoroCount}
+            </PomodorsButton>
+            <TaskMenu task={task} />
+          </>
+        )}
       </Element>
     </Wrapper>
   );

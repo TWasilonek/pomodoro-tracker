@@ -6,25 +6,22 @@ import { getMillisFromMinutes } from '../../utils/timeUtils';
 import AddTaskForm from './AddTaskForm';
 import Heading from '../Heading';
 import TasksList from './TasksList';
-import { Task, TASK_ACTIONS } from '../../store/Tasks.reducers';
+import { Task, TASK_ACTIONS, TASK_MODES } from '../../store/Tasks.reducers';
 
 const Tasks = () => {
   const { state, dispatch } = useContext(AppContext);
   const [todoPomodorosCount, setTodoPomodorosCount] = useState(0);
   const [completedPomodorosCount, setCompletedPomodorosCount] = useState(0);
   const [todoTasks, setTodoTasks] = useState<Task[]>([]);
-  const [completedTasks, setCompletedTasks] = useState<Task[]>([]);
+  const [doneTasks, setDoneTasks] = useState<Task[]>([]);
 
   useEffect(() => {
     let todoCount = 0;
     let completedCount = 0;
 
     state.tasks.forEach((task: Task) => {
-      if (task.completed) {
-        completedCount += task.pomodoroCount;
-      } else {
-        todoCount += task.pomodoroCount;
-      }
+      completedCount += task.completedCount;
+      todoCount += task.pomodoroCount;
     });
 
     setTodoPomodorosCount(todoCount);
@@ -32,10 +29,10 @@ const Tasks = () => {
   }, [state.tasks]);
 
   useEffect(() => {
-    const completed = state.tasks.filter((task) => task.completed);
-    const todo = state.tasks.filter((task) => !task.completed);
+    const done = state.tasks.filter((task) => task.completedCount > 0);
+    const todo = state.tasks.filter((task) => task.pomodoroCount > 0);
 
-    setCompletedTasks(completed);
+    setDoneTasks(done);
     setTodoTasks(todo);
   }, [state.tasks]);
 
@@ -46,7 +43,7 @@ const Tasks = () => {
         category,
         description,
         pomodoroCount: 1,
-        completed: false,
+        completedCount: 0,
       };
 
       dispatch({
@@ -65,13 +62,17 @@ const Tasks = () => {
         pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
       />
       <AddTaskForm onSubmit={handleAddTask} />
-      {todoTasks.length > 0 && <TasksList tasks={todoTasks} />}
+      {todoTasks.length > 0 && (
+        <TasksList tasks={todoTasks} mode={TASK_MODES.TODO} />
+      )}
       <Heading
         text="Done"
         numberOfPomodoros={completedPomodorosCount}
         pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
       />
-      {completedTasks.length > 0 && <TasksList tasks={completedTasks} />}
+      {doneTasks.length > 0 && (
+        <TasksList tasks={doneTasks} mode={TASK_MODES.COMPLETED} />
+      )}
     </>
   );
 };

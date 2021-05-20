@@ -99,6 +99,13 @@ const TaskMenu: React.FC<Props> = ({ task }) => {
     });
   }, [dispatch, task.id]);
 
+  const handleSetCompletedClick = useCallback(() => {
+    dispatch({
+      type: TASK_ACTIONS.COMPLETE_POMODORO,
+      payload: { id: task.id },
+    });
+  }, [dispatch, task.id]);
+
   return (
     <Wrapper ref={wrapperRef}>
       <MoreButton type="button" onClick={handleTriggerButtonClick}>
@@ -118,7 +125,7 @@ const TaskMenu: React.FC<Props> = ({ task }) => {
               </MenuItemButton>
             </MenuItem>
             <MenuItem>
-              <MenuItemButton type="button">
+              <MenuItemButton type="button" onClick={handleSetCompletedClick}>
                 Set as completed <FiCheck />
               </MenuItemButton>
             </MenuItem>

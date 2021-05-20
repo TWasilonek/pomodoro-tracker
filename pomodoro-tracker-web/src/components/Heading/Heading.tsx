@@ -53,7 +53,10 @@ const Heading: React.FC<Props> = ({
       {text} : {numberOfPomodoros}
     </Title>
     <Time>
-      / {formatMillisToHoursAndMins(numberOfPomodoros * pomodoroTime)}
+      /{' '}
+      {numberOfPomodoros > 0
+        ? formatMillisToHoursAndMins(numberOfPomodoros * pomodoroTime)
+        : ''}
     </Time>
   </Wrapper>
 );

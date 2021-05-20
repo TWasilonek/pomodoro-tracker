@@ -1,13 +1,14 @@
 import { FunctionComponent, useCallback } from 'react';
 import { getMillisFromMinutes } from '../../../utils/timeUtils';
 import TaskElement from '../TaskElement/TaskElement';
-import { Task } from '../../../store/Tasks.reducers';
+import { Task, TASK_MODES } from '../../../store/Tasks.reducers';
 
 interface Props {
   tasks: Task[];
+  mode: TASK_MODES;
 }
 
-const TasksList: FunctionComponent<Props> = ({ tasks }) => {
+const TasksList: FunctionComponent<Props> = ({ tasks, mode }) => {
   const getNumberOfPreceedingPomodoros = useCallback(
     (task: Task) => {
       let count = 0;
@@ -30,6 +31,7 @@ const TasksList: FunctionComponent<Props> = ({ tasks }) => {
       {tasks.map((task) => (
         <li key={task.id}>
           <TaskElement
+            mode={mode}
             task={task}
             numberOfPrecedingPomodors={getNumberOfPreceedingPomodoros(task)}
             pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}

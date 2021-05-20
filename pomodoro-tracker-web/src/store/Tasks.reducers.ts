@@ -4,8 +4,18 @@ export interface Task {
   id: string;
   description: string;
   category?: string;
+  // FIXME: Good for quick calculations, but not feasible in the long run
+  // change to pomodoros array with 'completed' atrr
   pomodoroCount: number;
-  completed: boolean;
+  completedCount: number;
+}
+
+// FIXME: not the best architectural approach.
+// Modes should be decided by components individually based on data.
+// Ex. remove pomororoCount and completedCount, and use instead an array of pomodoros with 'completed' attribute
+export enum TASK_MODES {
+  COMPLETED = 'completed',
+  TODO = 'todo',
 }
 
 export enum TASK_ACTIONS {
@@ -14,6 +24,7 @@ export enum TASK_ACTIONS {
   DELETE_TASK = 'DELETE_TASK',
   ADD_POMODORO = 'ADD_POMODORO',
   DELETE_POMODORO = 'DELETE_POMODORO',
+  COMPLETE_POMODORO = 'COMPLETE_POMODORO',
 }
 
 type TasksPayload = {
@@ -22,6 +33,7 @@ type TasksPayload = {
   [TASK_ACTIONS.DELETE_TASK]: { id: string };
   [TASK_ACTIONS.ADD_POMODORO]: { id: string };
   [TASK_ACTIONS.DELETE_POMODORO]: { id: string };
+  [TASK_ACTIONS.COMPLETE_POMODORO]: { id: string };
 };
 
 export type TasksActions =
@@ -34,7 +46,7 @@ const addTask = (state: Task[], task: Task) => [
     description: task.description,
     category: task.category,
     pomodoroCount: task.pomodoroCount,
-    completed: task.completed,
+    completedCount: task.completedCount,
   },
 ];
 
@@ -56,12 +68,23 @@ const addPomodoro = (state: Task[], id: string) =>
 const removePmodoro = (state: Task[], id: string) =>
   state.map((task) => {
     if (task.id === id) {
-      const newPomodoroCount = task.pomodoroCount - 1;
       return {
         ...task,
-        pomodoroCount: newPomodoroCount,
-        completed: newPomodoroCount <= 0,
+        pomodoroCount: task.pomodoroCount - 1,
       };
+    }
+    return task;
+  });
+
+const completePomodoro = (state: Task[], id: string) =>
+  state.map((task) => {
+    if (task.id === id) {
+      const updatedTask = { ...task };
+      if (task.pomodoroCount > 0) {
+        updatedTask.pomodoroCount = task.pomodoroCount - 1;
+        updatedTask.completedCount = task.completedCount + 1;
+      }
+      return updatedTask;
     }
     return task;
   });
@@ -77,6 +100,8 @@ export const tasksReducer = (state: Task[], action: TasksActions) => {
       return addPomodoro(state, action.payload.id);
     case TASK_ACTIONS.DELETE_POMODORO:
       return removePmodoro(state, action.payload.id);
+    case TASK_ACTIONS.COMPLETE_POMODORO:
+      return completePomodoro(state, action.payload.id);
     default:
       return state;
   }
