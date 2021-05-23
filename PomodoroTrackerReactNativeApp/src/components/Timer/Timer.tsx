@@ -1,5 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
+import {Text} from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
+
 import {COLORS} from '../../constants/colors';
 import {DEFAULT_BREAK_TIME, DEFAULT_TASK_TIME} from '../../constants/defaults';
 import {Task} from '../../store/Tasks.reducers';
@@ -21,19 +24,18 @@ const Wrapper = styled.View`
   padding: 40px;
   align-items: center;
   justify-content: center;
-  color: white;
   border-bottom-right-radius: 40px;
   border-bottom-left-radius: 40px;
 `;
 
 const Clock = styled.Text`
-  font-size: 98px;
+  font-size: 50px;
   font-weight: 600;
-  letter-spacing: 0.1;
+  color: #fff;
 `;
 
 const TaskName = styled.Text`
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   margin-bottom: 30px;
 `;
@@ -46,19 +48,12 @@ const Actions = styled.View`
   max-width: 550px;
 `;
 
-const Button = styled.Button`
-  width: 255px;
-  height: 45px;
-  display: flex;
+const Button = styled.Pressable`
   align-items: center;
   justify-content: center;
   background-color: transparent;
-  border: 2px solid #fff;
-  border-radius: 5px;
   font-size: 18px;
-  font-weight: 600;
   color: #fff;
-  text-transform: uppercase;
 `;
 
 interface Props {
@@ -141,33 +136,21 @@ const Timer: React.FC<Props> = ({
       <TaskName>{taskName}</TaskName>
       <Actions>
         {counting ? (
-          <Button
-            title=""
-            onPress={handlePauseTimerClick}
-            disabled={!activeTask}>
-            Pause
+          <Button onPress={handlePauseTimerClick} disabled={!activeTask}>
+            <Icon name="pause" size={50} color="#fff" />
           </Button>
         ) : (
-          <Button
-            title=""
-            onPress={handleStartTimerClick}
-            disabled={!activeTask}>
-            Start
+          <Button onPress={handleStartTimerClick} disabled={!activeTask}>
+            <Icon name="play" size={50} color="#fff" />
           </Button>
         )}
         {counting ? (
-          <Button
-            title=""
-            onPress={handleStopTimerClick}
-            disabled={!activeTask}>
-            Stop
+          <Button onPress={handleStopTimerClick} disabled={!activeTask}>
+            <Icon name="stop-circle" size={50} color="#fff" />
           </Button>
         ) : (
-          <Button
-            title=""
-            onPress={handleCompleteTaskClick}
-            disabled={!activeTask}>
-            Complete
+          <Button onPress={handleCompleteTaskClick} disabled={!activeTask}>
+            <Icon name="check" size={50} color="#fff" />
           </Button>
         )}
       </Actions>

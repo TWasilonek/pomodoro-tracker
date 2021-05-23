@@ -1,4 +1,5 @@
-import {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
+import {Text} from 'react-native';
 import styled from 'styled-components';
 import {FiCheck, FiEdit, FiMinus, FiPlus, FiTrash} from 'react-icons/fi';
 import {BsThreeDots} from 'react-icons/bs';
@@ -89,8 +90,10 @@ const TaskMenu: React.FC<Props> = ({
 
   return (
     <Wrapper ref={wrapperRef}>
-      <MoreButton type="button" onClick={handleTriggerButtonClick}>
-        <BsThreeDots size="30px" />
+      <MoreButton onPress={handleTriggerButtonClick}>
+        <Text>
+          <BsThreeDots size="30px" />
+        </Text>
       </MoreButton>
       {isOpen && (
         <PopupMenuWrapper>

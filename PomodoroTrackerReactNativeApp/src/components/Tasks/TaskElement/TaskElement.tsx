@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import format from 'date-fns/format';
 
@@ -8,6 +8,7 @@ import Button from '../../../UI/Button';
 import TaskMenu from '../TaskMenu';
 import EditTaskForm from '../AddTaskForm';
 import {COLORS} from '../../../constants/colors';
+import {Text} from 'react-native';
 
 interface StyledProps {
   flex?: number;
@@ -147,14 +148,14 @@ const TaskElement: React.FC<Props> = ({
           <Element flex={7}>{task.description}</Element>
           <Element flex={2}>
             {mode === TASK_MODES.COMPLETED ? (
-              <PomodorsButton type="button" disabled>
-                {task.completedCount}
+              <PomodorsButton disabled>
+                <Text>{task.completedCount}</Text>
               </PomodorsButton>
             ) : (
               <>
                 <Time>{endTime}</Time>
-                <PomodorsButton type="button" onClick={handleAddPomodoroClick}>
-                  {task.pomodoroCount}
+                <PomodorsButton onPress={handleAddPomodoroClick}>
+                  <Text>{task.pomodoroCount}</Text>
                 </PomodorsButton>
                 <TaskMenu
                   onEditTaskClick={handleEditTaskClick}
