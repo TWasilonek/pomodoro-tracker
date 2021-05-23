@@ -1,5 +1,4 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-// import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 import styled from 'styled-components/native';
 
@@ -10,6 +9,7 @@ import {Task, TASK_ACTIONS, TASK_MODES} from '../../store/Tasks.reducers';
 import {DEFAULT_TASK_TIME} from '../../constants/defaults';
 import {COLORS} from '../../constants/colors';
 import EditTaskModal from './EditTaskModal';
+import {ScrollView} from 'react-native';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -80,10 +80,28 @@ const Tasks = () => {
   );
 
   return (
-    <Wrapper>
-      <Button onPress={() => setEditTaskModalVisible(true)}>
-        <ButtonText>Add Task</ButtonText>
-      </Button>
+    <ScrollView>
+      <Wrapper>
+        <Button onPress={() => setEditTaskModalVisible(true)}>
+          <ButtonText>Add Task</ButtonText>
+        </Button>
+        <Heading
+          text="Pomodoros"
+          numberOfPomodoros={todoPomodorosCount}
+          pomodoroTime={DEFAULT_TASK_TIME}
+        />
+        {todoTasks.length > 0 && (
+          <TasksList tasks={todoTasks} mode={TASK_MODES.TODO} />
+        )}
+        <Heading
+          text="Done"
+          numberOfPomodoros={completedPomodorosCount}
+          pomodoroTime={DEFAULT_TASK_TIME}
+        />
+        {doneTasks.length > 0 && (
+          <TasksList tasks={doneTasks} mode={TASK_MODES.COMPLETED} />
+        )}
+      </Wrapper>
       <EditTaskModal
         onSubmit={handleAddTask}
         data={{category: '', description: ''}}
@@ -92,28 +110,7 @@ const Tasks = () => {
           onRequestClose: () => setEditTaskModalVisible(false),
         }}
       />
-      <Heading
-        text="Pomodoros"
-        numberOfPomodoros={todoPomodorosCount}
-        pomodoroTime={DEFAULT_TASK_TIME}
-      />
-
-      {/* <AddTaskForm
-        onSubmit={handleAddTask}
-        data={{category: '', description: ''}}
-      /> */}
-      {todoTasks.length > 0 && (
-        <TasksList tasks={todoTasks} mode={TASK_MODES.TODO} />
-      )}
-      <Heading
-        text="Done"
-        numberOfPomodoros={completedPomodorosCount}
-        pomodoroTime={DEFAULT_TASK_TIME}
-      />
-      {doneTasks.length > 0 && (
-        <TasksList tasks={doneTasks} mode={TASK_MODES.COMPLETED} />
-      )}
-    </Wrapper>
+    </ScrollView>
   );
 };
 
