@@ -18,8 +18,8 @@ import Home from './screens/Home';
 import {AppProvider} from './store/AppContext';
 import {COLORS} from './constants/colors';
 
-const StyledStatusBar = styled.StatusBar`
-  background-color: ${COLORS.TOMATO};
+const StyledSafeAreaView = styled.SafeAreaView`
+  flex: 1;
 `;
 
 // const Section: React.FC<{
@@ -59,9 +59,11 @@ const App = () => {
 
   return (
     <AppProvider>
-      <SafeAreaView>
-        <StyledStatusBar
+      <StyledSafeAreaView>
+        <StatusBar
+          translucent
           barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+          backgroundColor={COLORS.TOMATO}
         />
         <Home />
         {/* <ScrollView
@@ -88,7 +90,7 @@ const App = () => {
           <LearnMoreLinks />
         </View>
       </ScrollView> */}
-      </SafeAreaView>
+      </StyledSafeAreaView>
     </AppProvider>
   );
 };

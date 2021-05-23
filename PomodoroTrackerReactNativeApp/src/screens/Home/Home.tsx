@@ -1,15 +1,21 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
 import styled from 'styled-components/native';
 
 import {AppContext} from '../../store/AppContext';
 import {Task, TASK_ACTIONS} from '../../store/Tasks.reducers';
-import Tasks from '../../components/Tasks';
 import Timer from '../../components/Timer';
-import {COLORS} from '../../constants/colors';
 
 const Wrapper = styled.View`
   justify-content: center;
+  flex: 1;
+`;
+
+const TimerWrapper = styled.View`
+  flex: 3;
+`;
+
+const TasksWrapper = styled.View`
+  flex: 2;
 `;
 
 const Home = () => {
@@ -51,12 +57,15 @@ const Home = () => {
 
   return (
     <Wrapper>
-      <Timer
-        activeTask={activeTask}
-        onCompleteTaskClick={handleCompleteTaskClick}
-        onTaskCounterFinish={handleTaskCounterFinish}
-      />
+      <TimerWrapper>
+        <Timer
+          activeTask={activeTask}
+          onCompleteTaskClick={handleCompleteTaskClick}
+          onTaskCounterFinish={handleTaskCounterFinish}
+        />
+      </TimerWrapper>
       {/* <Tasks /> */}
+      <TasksWrapper />
     </Wrapper>
   );
 };

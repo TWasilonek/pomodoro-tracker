@@ -17,8 +17,8 @@ interface WrapperProps {
 const Wrapper = styled.View`
   background-color: ${(props: WrapperProps) =>
     props.mode === TIMER_MODES.TASK ? COLORS.TOMATO : COLORS.GREEN};
+  flex: 1;
   padding: 40px;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   color: white;
