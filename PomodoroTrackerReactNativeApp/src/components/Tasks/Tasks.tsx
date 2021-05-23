@@ -1,5 +1,5 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Pressable, PressableProps, Text} from 'react-native';
+// import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 import styled from 'styled-components/native';
 
@@ -9,6 +9,7 @@ import TasksList from './TasksList';
 import {Task, TASK_ACTIONS, TASK_MODES} from '../../store/Tasks.reducers';
 import {DEFAULT_TASK_TIME} from '../../constants/defaults';
 import {COLORS} from '../../constants/colors';
+import EditTaskModal from './EditTaskModal';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -73,6 +74,7 @@ const Tasks = () => {
         type: TASK_ACTIONS.ADD_TASK,
         payload: newTask,
       });
+      setEditTaskModalVisible(false);
     },
     [dispatch],
   );
@@ -82,9 +84,14 @@ const Tasks = () => {
       <Button onPress={() => setEditTaskModalVisible(true)}>
         <ButtonText>Add Task</ButtonText>
       </Button>
-      {editTaskModalVisible && (
-        <Text style={{fontSize: 55, color: '#ff0000'}}>ADD TASK MODAL!!!!</Text>
-      )}
+      <EditTaskModal
+        onSubmit={handleAddTask}
+        data={{category: '', description: ''}}
+        modalProps={{
+          visible: editTaskModalVisible,
+          onRequestClose: () => setEditTaskModalVisible(false),
+        }}
+      />
       <Heading
         text="Pomodoros"
         numberOfPomodoros={todoPomodorosCount}

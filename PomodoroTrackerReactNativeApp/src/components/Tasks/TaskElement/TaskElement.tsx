@@ -7,7 +7,7 @@ import {AppContext} from '../../../store/AppContext';
 import {Task, TASK_ACTIONS, TASK_MODES} from '../../../store/Tasks.reducers';
 import Button from '../../../UI/Button';
 import TaskMenu from '../TaskMenu';
-import EditTaskForm from '../AddTaskForm';
+import EditTaskForm from '../EditTaskModal';
 import {COLORS} from '../../../constants/colors';
 
 interface StyledProps {
@@ -31,18 +31,13 @@ const Element = styled.View`
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 21px;
-
-  &:not(:last-child) {
-    margin-right: 30px;
-  }
 `;
 
 const PomodorsButton = styled(Button)`
   margin-right: 7px;
   width: 48px;
   height: 48px;
-  border-radius: 100%;
-  cursor: pointer;
+  border-radius: 200;
 `;
 
 const Time = styled.Text`
@@ -133,7 +128,7 @@ const TaskElement: React.FC<Props> = ({
 
   return (
     <Wrapper>
-      {isEdited ? (
+      {/* {isEdited ? (
         <EditTaskForm
           data={{
             category: task.category || '',
@@ -142,33 +137,37 @@ const TaskElement: React.FC<Props> = ({
           }}
           onSubmit={handleSubmitEditedTask}
         />
-      ) : (
-        <TaskWrapper>
-          <Element flex={3}>{task.category || ''}</Element>
-          <Element flex={7}>{task.description}</Element>
-          <Element flex={2}>
-            {mode === TASK_MODES.COMPLETED ? (
-              <PomodorsButton disabled>
-                <Text>{task.completedCount}</Text>
+      ) : ( */}
+      <TaskWrapper>
+        <Element flex={3}>
+          <Text>{task.category || ''}</Text>
+        </Element>
+        <Element flex={7}>
+          <Text>{task.description}</Text>
+        </Element>
+        <Element flex={2}>
+          {mode === TASK_MODES.COMPLETED ? (
+            <PomodorsButton disabled>
+              <Text>{task.completedCount}</Text>
+            </PomodorsButton>
+          ) : (
+            <>
+              <Time>{endTime}</Time>
+              <PomodorsButton onPress={handleAddPomodoroClick}>
+                <Text>{task.pomodoroCount}</Text>
               </PomodorsButton>
-            ) : (
-              <>
-                <Time>{endTime}</Time>
-                <PomodorsButton onPress={handleAddPomodoroClick}>
-                  <Text>{task.pomodoroCount}</Text>
-                </PomodorsButton>
-                <TaskMenu
-                  onEditTaskClick={handleEditTaskClick}
-                  onDeleteTaskClick={handleDeleteTaskClick}
-                  onAddPomodoroClick={handleAddPomodoroClick}
-                  onCompletePomodoroClick={handleSetCompletedClick}
-                  onDeletePomodoroClick={handleDeletePomodoroClick}
-                />
-              </>
-            )}
-          </Element>
-        </TaskWrapper>
-      )}
+              <TaskMenu
+                onEditTaskClick={handleEditTaskClick}
+                onDeleteTaskClick={handleDeleteTaskClick}
+                onAddPomodoroClick={handleAddPomodoroClick}
+                onCompletePomodoroClick={handleSetCompletedClick}
+                onDeletePomodoroClick={handleDeletePomodoroClick}
+              />
+            </>
+          )}
+        </Element>
+      </TaskWrapper>
+      {/* )} */}
     </Wrapper>
   );
 };

@@ -112,7 +112,7 @@ const TaskMenu: React.FC<Props> = ({
             </MenuItem>
             <MenuItem>
               <MenuItemButton onPress={onDeleteTaskClick}>
-                Delete <Icon name="trasg" />
+                Delete <Icon name="trash" />
               </MenuItemButton>
             </MenuItem>
           </Menu>
