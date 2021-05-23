@@ -1,8 +1,7 @@
 import React, {useCallback, useRef, useState} from 'react';
 import {Text} from 'react-native';
-import styled from 'styled-components';
-import {FiCheck, FiEdit, FiMinus, FiPlus, FiTrash} from 'react-icons/fi';
-import {BsThreeDots} from 'react-icons/bs';
+import styled from 'styled-components/native';
+import Icon from 'react-native-vector-icons/Feather';
 
 import {COLORS} from '../../../constants/colors';
 import Button from '../../../UI/Button';
@@ -10,7 +9,7 @@ import Button from '../../../UI/Button';
 
 const BTN_HEIGHT = 35;
 
-const Wrapper = styled.div`
+const Wrapper = styled.View`
   position: relative;
 `;
 
@@ -19,7 +18,7 @@ const MoreButton = styled(Button)`
   width: 70px;
 `;
 
-const PopupMenuWrapper = styled.div`
+const PopupMenuWrapper = styled.View`
   position: absolute;
   z-index: 1000;
   background: white;
@@ -30,13 +29,13 @@ const PopupMenuWrapper = styled.div`
   width: 300px;
 `;
 
-const Menu = styled.ul`
+const Menu = styled.View`
   list-style: none;
   padding-left: 0;
   margin: 0;
 `;
 
-const MenuItem = styled.li`
+const MenuItem = styled.View`
   display: flex;
   align-items: center;
   padding: 7px;
@@ -47,21 +46,14 @@ const MenuItem = styled.li`
   }
 `;
 
-const MenuItemButton = styled.button`
-  display: flex;
+const MenuItemButton = styled.Pressable`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background: #fff;
+  background-color: #fff;
   color: ${COLORS.TEXT};
   border: none;
-  cursor: pointer;
   font-size: 16px;
-
-  &:hover,
-  &:active {
-    font-weight: 600;
-  }
 `;
 
 interface Props {
@@ -91,36 +83,36 @@ const TaskMenu: React.FC<Props> = ({
   return (
     <Wrapper ref={wrapperRef}>
       <MoreButton onPress={handleTriggerButtonClick}>
-        <Text>
-          <BsThreeDots size="30px" />
-        </Text>
+        <Icon name="more-horizontal" />
       </MoreButton>
       {isOpen && (
         <PopupMenuWrapper>
           <Menu>
             <MenuItem>
-              <MenuItemButton type="button" onClick={onAddPomodoroClick}>
-                Add another pomodoro <FiPlus />
+              <MenuItemButton onPress={onAddPomodoroClick}>
+                <Text>
+                  Add another pomodoro <Icon name="plus" />
+                </Text>
               </MenuItemButton>
             </MenuItem>
             <MenuItem>
-              <MenuItemButton type="button" onClick={onDeletePomodoroClick}>
-                Delete one pomodoro <FiMinus />
+              <MenuItemButton onPress={onDeletePomodoroClick}>
+                Delete one pomodoro <Icon name="minus" />
               </MenuItemButton>
             </MenuItem>
             <MenuItem>
-              <MenuItemButton type="button" onClick={onCompletePomodoroClick}>
-                Set as completed <FiCheck />
+              <MenuItemButton onPress={onCompletePomodoroClick}>
+                Set as completed <Icon name="check" />
               </MenuItemButton>
             </MenuItem>
             <MenuItem>
-              <MenuItemButton type="button" onClick={onEditTaskClick}>
-                Edit <FiEdit />
+              <MenuItemButton onPress={onEditTaskClick}>
+                Edit <Icon name="edit" />
               </MenuItemButton>
             </MenuItem>
             <MenuItem>
-              <MenuItemButton type="button" onClick={onDeleteTaskClick}>
-                Delete <FiTrash />
+              <MenuItemButton onPress={onDeleteTaskClick}>
+                Delete <Icon name="trasg" />
               </MenuItemButton>
             </MenuItem>
           </Menu>

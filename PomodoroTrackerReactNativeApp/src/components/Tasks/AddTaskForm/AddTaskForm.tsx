@@ -1,6 +1,7 @@
 import {FunctionComponent, SyntheticEvent, useCallback, useState} from 'react';
 import styled from 'styled-components/native';
-import {FiPlus, FiSave} from 'react-icons/fi';
+import Icon from 'react-native-vector-icons/Feather';
+
 import {COLORS} from '../../../constants/colors';
 import Button from '../../../UI/Button';
 
@@ -96,8 +97,12 @@ const EditTaskForm: FunctionComponent<Props> = ({data, onSubmit}) => {
           onChange={handleChange}
           flex={8}
         /> */}
-        <SubmitButton type="submit" disabled={!description} flex={1}>
-          {data.id ? <FiSave size="26px" /> : <FiPlus size="26px" />}
+        <SubmitButton disabled={!description} flex={1}>
+          {data.id ? (
+            <Icon name="save" size={26} />
+          ) : (
+            <Icon name="plus" size={26} />
+          )}
         </SubmitButton>
       </Form>
     </>

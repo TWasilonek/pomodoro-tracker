@@ -1,3 +1,4 @@
+import React from 'react';
 import formatDuration from 'date-fns/formatDuration';
 import styled from 'styled-components/native';
 import {COLORS} from '../../constants/colors';

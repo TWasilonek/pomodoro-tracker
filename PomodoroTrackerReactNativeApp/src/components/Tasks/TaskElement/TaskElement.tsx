@@ -1,4 +1,5 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {Text} from 'react-native';
 import styled from 'styled-components/native';
 import format from 'date-fns/format';
 
@@ -8,7 +9,6 @@ import Button from '../../../UI/Button';
 import TaskMenu from '../TaskMenu';
 import EditTaskForm from '../AddTaskForm';
 import {COLORS} from '../../../constants/colors';
-import {Text} from 'react-native';
 
 interface StyledProps {
   flex?: number;

@@ -1,15 +1,12 @@
 import React, {FunctionComponent, useCallback} from 'react';
+import {View} from 'react-native';
 import styled from 'styled-components/native';
 
 import {getMillisFromMinutes} from '../../../utils/timeUtils';
 import TaskElement from '../TaskElement/TaskElement';
 import {Task, TASK_MODES} from '../../../store/Tasks.reducers';
-import {View} from 'react-native';
 
-const List = styled.View`
-  list-style: none;
-  padding: 0;
-`;
+const List = styled.View``;
 
 interface Props {
   tasks: Task[];

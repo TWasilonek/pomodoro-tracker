@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 import {AppContext} from '../../store/AppContext';
 import {Task, TASK_ACTIONS} from '../../store/Tasks.reducers';
 import Timer from '../../components/Timer';
+import Tasks from '../../components/Tasks';
 
 const Wrapper = styled.View`
   justify-content: center;
@@ -64,7 +65,7 @@ const Home = () => {
           onTaskCounterFinish={handleTaskCounterFinish}
         />
       </TimerWrapper>
-      {/* <Tasks /> */}
+      <Tasks />
       <TasksWrapper />
     </Wrapper>
   );
