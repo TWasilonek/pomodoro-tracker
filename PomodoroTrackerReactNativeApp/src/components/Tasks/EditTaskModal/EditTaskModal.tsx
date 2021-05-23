@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useCallback, useState} from 'react';
-import {Modal, ModalProps} from 'react-native';
+import {Modal, ModalProps, Pressable} from 'react-native';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -51,7 +51,6 @@ const Input = styled.TextInput`
 const ErrorText = styled.Text`
   color: ${COLORS.RED};
 `;
-const Button = styled.Pressable``;
 
 interface EditTaskFormValues {
   category: string;
@@ -106,12 +105,12 @@ const EditTaskForm: FunctionComponent<Props> = ({
         {...modalProps}>
         <InnerWrapper>
           <Top>
-            <Button onPress={modalProps.onRequestClose}>
+            <Pressable onPress={modalProps.onRequestClose}>
               <Icon name="x" size={30} color={COLORS.TEXT} />
-            </Button>
-            <Button onPress={handleSubmit}>
+            </Pressable>
+            <Pressable onPress={handleSubmit}>
               <Icon name="check" size={30} color={COLORS.TEXT} />
-            </Button>
+            </Pressable>
           </Top>
           <Form>
             <Input
