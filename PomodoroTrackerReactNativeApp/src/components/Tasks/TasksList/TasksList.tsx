@@ -1,12 +1,12 @@
 import React, {FunctionComponent, useCallback} from 'react';
-import {View} from 'react-native';
+import {ListRenderItem} from 'react-native';
 import styled from 'styled-components/native';
 
 import {getMillisFromMinutes} from '../../../utils/timeUtils';
 import TaskElement from '../TaskElement/TaskElement';
 import {Task, TASK_MODES} from '../../../store/Tasks.reducers';
 
-const List = styled.View``;
+const List = styled.FlatList``;
 
 interface Props {
   tasks: Task[];
@@ -31,19 +31,18 @@ const TasksList: FunctionComponent<Props> = ({tasks, mode}) => {
     [tasks],
   );
 
+  const renderItem: ListRenderItem<Task> = ({item}) => (
+    <TaskElement
+      mode={mode}
+      task={item}
+      numberOfPrecedingPomodors={getNumberOfPreceedingPomodoros(item)}
+      pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
+    />
+  );
+
   return (
-    <List>
-      {tasks.map(task => (
-        <View key={task.id}>
-          <TaskElement
-            mode={mode}
-            task={task}
-            numberOfPrecedingPomodors={getNumberOfPreceedingPomodoros(task)}
-            pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
-          />
-        </View>
-      ))}
-    </List>
+    // @ts-ignore
+    <List data={tasks} renderItem={renderItem} keyExtractor={item => item.id} />
   );
 };
 

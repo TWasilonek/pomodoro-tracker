@@ -1,5 +1,5 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Text} from 'react-native';
+import {Text, View, Pressable} from 'react-native';
 import styled from 'styled-components/native';
 import format from 'date-fns/format';
 
@@ -14,18 +14,33 @@ interface StyledProps {
   flex?: number;
 }
 
-const Wrapper = styled.View`
-  margin-top: 10px;
-`;
+// const Wrapper = styled.View`
+//   margin-top: 10px;
+// `;
 
 const TaskWrapper = styled.View`
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
+  margin-top: 22px;
+  border-radius: 4px;
+  border-width: 1px;
+  border-color: ${COLORS.DARK_BLUE_GREYISH};
+`;
+
+const Top = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const Bottom = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const AddPomodoroWrapper = styled.View`
+  flex-direction: row;
+  flex: 1;
 `;
 
 const Element = styled.View`
-  display: flex;
   align-items: center;
   flex: ${(props: StyledProps) => props.flex};
   margin-top: 10px;
@@ -127,7 +142,7 @@ const TaskElement: React.FC<Props> = ({
   }, [dispatch, task.id]);
 
   return (
-    <Wrapper>
+    <>
       {/* {isEdited ? (
         <EditTaskForm
           data={{
@@ -139,13 +154,42 @@ const TaskElement: React.FC<Props> = ({
         />
       ) : ( */}
       <TaskWrapper>
-        <Element flex={3}>
+        <Top>
+          {/* <Element flex={3}> */}
           <Text>{task.category || ''}</Text>
-        </Element>
-        <Element flex={7}>
-          <Text>{task.description}</Text>
-        </Element>
-        <Element flex={2}>
+          {/* </Element> */}
+          {mode !== TASK_MODES.COMPLETED && (
+            <TaskMenu
+              onEditTaskClick={handleEditTaskClick}
+              onDeleteTaskClick={handleDeleteTaskClick}
+              onAddPomodoroClick={handleAddPomodoroClick}
+              onCompletePomodoroClick={handleSetCompletedClick}
+              onDeletePomodoroClick={handleDeletePomodoroClick}
+            />
+          )}
+        </Top>
+        <Text>{task.description}</Text>
+        <Bottom>
+          {mode === TASK_MODES.COMPLETED ? (
+            <PomodorsButton disabled>
+              <Text>{task.completedCount}</Text>
+            </PomodorsButton>
+          ) : (
+            <>
+              <AddPomodoroWrapper>
+                <PomodorsButton onPress={handleAddPomodoroClick}>
+                  <Text>{task.pomodoroCount}</Text>
+                </PomodorsButton>
+                <Pressable>
+                  <Text>+ Add Pomodoro</Text>
+                </Pressable>
+              </AddPomodoroWrapper>
+
+              <Time>{endTime}</Time>
+            </>
+          )}
+        </Bottom>
+        {/* <Element flex={2}>
           {mode === TASK_MODES.COMPLETED ? (
             <PomodorsButton disabled>
               <Text>{task.completedCount}</Text>
@@ -165,10 +209,13 @@ const TaskElement: React.FC<Props> = ({
               />
             </>
           )}
-        </Element>
+        </Element> */}
+        {/* <Element flex={7}>
+          <Text>{task.description}</Text>
+        </Element> */}
       </TaskWrapper>
       {/* )} */}
-    </Wrapper>
+    </>
   );
 };
 
