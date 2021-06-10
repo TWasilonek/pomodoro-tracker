@@ -1,4 +1,4 @@
-import { ActionMap } from '../types';
+import {ActionMap} from '../types';
 
 export interface Task {
   id: string;
@@ -29,10 +29,10 @@ export enum TASK_ACTIONS {
 type TasksPayload = {
   [TASK_ACTIONS.ADD_TASK]: Task;
   [TASK_ACTIONS.UPDATE_TASK]: Task;
-  [TASK_ACTIONS.DELETE_TASK]: { id: string };
-  [TASK_ACTIONS.ADD_POMODORO]: { id: string };
-  [TASK_ACTIONS.DELETE_POMODORO]: { id: string };
-  [TASK_ACTIONS.COMPLETE_POMODORO]: { id: string };
+  [TASK_ACTIONS.DELETE_TASK]: {id: string};
+  [TASK_ACTIONS.ADD_POMODORO]: {id: string};
+  [TASK_ACTIONS.DELETE_POMODORO]: {id: string};
+  [TASK_ACTIONS.COMPLETE_POMODORO]: {id: string};
 };
 
 export type TasksActions =
@@ -50,7 +50,7 @@ const addTask = (state: Task[], task: Task) => [
 ];
 
 const updateTask = (state: Task[], newTask: Task) =>
-  state.map((task) => {
+  state.map(task => {
     if (task.id === newTask.id) {
       return {
         ...newTask,
@@ -60,11 +60,11 @@ const updateTask = (state: Task[], newTask: Task) =>
   });
 
 const deleteTask = (state: Task[], id: string) => [
-  ...state.filter((task) => task.id !== id),
+  ...state.filter(task => task.id !== id),
 ];
 
 const addPomodoro = (state: Task[], id: string) =>
-  state.map((task) => {
+  state.map(task => {
     if (task.id === id) {
       return {
         ...task,
@@ -75,7 +75,7 @@ const addPomodoro = (state: Task[], id: string) =>
   });
 
 const removePmodoro = (state: Task[], id: string) =>
-  state.map((task) => {
+  state.map(task => {
     if (task.id === id) {
       return {
         ...task,
@@ -86,9 +86,9 @@ const removePmodoro = (state: Task[], id: string) =>
   });
 
 const completePomodoro = (state: Task[], id: string) =>
-  state.map((task) => {
+  state.map(task => {
     if (task.id === id) {
-      const updatedTask = { ...task };
+      const updatedTask = {...task};
       if (task.pomodoroCount > 0) {
         updatedTask.pomodoroCount = task.pomodoroCount - 1;
         updatedTask.completedCount = task.completedCount + 1;
