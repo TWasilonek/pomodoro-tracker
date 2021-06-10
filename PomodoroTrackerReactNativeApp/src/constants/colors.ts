@@ -9,4 +9,5 @@ export const COLORS = {
   GREY_LIGHTER: '#E1E5E9',
   BLUE_GREYISH: '#C2CDD6',
   DARK_BLUE_GREYISH: '#5C6C7F',
+  CYAN: '#00C2FF',
 };
