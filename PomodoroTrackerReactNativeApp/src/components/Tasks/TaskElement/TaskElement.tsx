@@ -55,17 +55,20 @@ const TaskText = styled.Text`
 
 const Bottom = styled.View`
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
 `;
 
-const AddPomodoroWrapper = styled.View``;
-
-const PomodorsButton = styled(Button)`
+const PomodorosCount = styled.View`
   margin-right: 7px;
   width: 48;
   height: 48;
   border-radius: 200;
+  border-width: 1;
+  border-color: ${COLORS.GREY_LIGHTER};
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  color: ${COLORS.TEXT};
 `;
 
 const AddPomodoroBtnText = styled.Text`
@@ -76,7 +79,9 @@ const Time = styled.Text`
   margin-right: 7px;
   font-size: 20px;
   font-weight: 700;
+  text-align: right;
   color: ${COLORS.TEXT_LIGHT};
+  flex: 1;
 `;
 
 interface Props {
@@ -84,6 +89,7 @@ interface Props {
   mode: TASK_MODES;
   pomodoroTimeInMilliseconds: number;
   numberOfPrecedingPomodors?: number;
+  onAddPomodoroClick?: (task: Task) => void;
 }
 
 const TaskElement: React.FC<Props> = ({
@@ -181,9 +187,7 @@ const TaskElement: React.FC<Props> = ({
             />
             <CategoryText>{task.category || ''}</CategoryText>
           </Category>
-          {/* <Element flex={3}> */}
 
-          {/* </Element> */}
           {mode !== TASK_MODES.COMPLETED && (
             <TaskMenu
               onEditTaskClick={handleEditTaskClick}
@@ -196,24 +200,15 @@ const TaskElement: React.FC<Props> = ({
         </Top>
         <TaskText>{task.description}</TaskText>
         <Bottom>
-          {mode === TASK_MODES.COMPLETED ? (
-            <PomodorsButton disabled>
-              <Text>{task.completedCount}</Text>
-            </PomodorsButton>
-          ) : (
-            <>
-              {/* <AddPomodoroWrapper style={{flex: 1, alignSelf: 'flex-start'}}> */}
-              <PomodorsButton onPress={handleAddPomodoroClick}>
-                <Text>{task.pomodoroCount}</Text>
-              </PomodorsButton>
-              <Pressable>
-                <AddPomodoroBtnText>+ Add Pomodoro</AddPomodoroBtnText>
-              </Pressable>
-              {/* </AddPomodoroWrapper> */}
-
-              <Time>{endTime}</Time>
-            </>
+          <PomodorosCount>
+            <Text>{task.pomodoroCount}</Text>
+          </PomodorosCount>
+          {mode === TASK_MODES.TODO && (
+            <Pressable onPress={() => handleAddPomodoroClick}>
+              <AddPomodoroBtnText>+ Add Pomodoro</AddPomodoroBtnText>
+            </Pressable>
           )}
+          <Time>{endTime}</Time>
         </Bottom>
         {/* <Element flex={2}>
           {mode === TASK_MODES.COMPLETED ? (

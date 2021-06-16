@@ -52,7 +52,7 @@ const ErrorText = styled.Text`
   color: ${COLORS.RED};
 `;
 
-interface EditTaskFormValues {
+export interface EditTaskFormValues {
   category: string;
   description: string;
   id?: string;

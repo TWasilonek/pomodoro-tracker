@@ -11,13 +11,13 @@ const Wrapper = styled.View`
   flex: 1;
 `;
 
-const TimerWrapper = styled.View`
-  flex: 3;
-`;
+// const TimerWrapper = styled.View`
+//   flex: 3;
+// `;
 
-const TasksWrapper = styled.View`
-  flex: 2;
-`;
+// const TasksWrapper = styled.View`
+//   flex: 2;
+// `;
 
 const Home = () => {
   const {state, dispatch} = useContext(AppContext);
@@ -58,16 +58,16 @@ const Home = () => {
 
   return (
     <Wrapper>
-      <TimerWrapper>
-        <Timer
-          activeTask={activeTask}
-          onCompleteTaskClick={handleCompleteTaskClick}
-          onTaskCounterFinish={handleTaskCounterFinish}
-        />
-      </TimerWrapper>
-      <TasksWrapper>
-        <Tasks />
-      </TasksWrapper>
+      {/* <TimerWrapper> */}
+      <Timer
+        activeTask={activeTask}
+        onCompleteTaskClick={handleCompleteTaskClick}
+        onTaskCounterFinish={handleTaskCounterFinish}
+      />
+      {/* </TimerWrapper> */}
+      {/* <TasksWrapper> */}
+      <Tasks />
+      {/* </TasksWrapper> */}
     </Wrapper>
   );
 };

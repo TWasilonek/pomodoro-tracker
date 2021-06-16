@@ -1,28 +1,15 @@
 import React from 'react';
 import formatDuration from 'date-fns/formatDuration';
 import styled from 'styled-components/native';
+
 import {COLORS} from '../../constants/colors';
 
 const Wrapper = styled.View`
-  margin-top: 40px;
-  display: flex;
-  align-items: baseline;
+  flex: 1;
   justify-content: center;
-
-  &:before,
-  &:after {
-    content: '';
-    flex: 1;
-    align-self: center;
-    background: ${COLORS.GREY_LIGHT};
-    height: 1px;
-  }
-  &:before {
-    margin-right: 15px;
-  }
-  &:after {
-    margin-left: 15px;
-  }
+  align-items: center;
+  flex-direction: row;
+  background-color: #fff;
 `;
 
 const Title = styled.Text`
