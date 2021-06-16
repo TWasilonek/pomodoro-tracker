@@ -9,7 +9,10 @@ import {Task, TASK_ACTIONS, TASK_MODES} from '../../store/Tasks.reducers';
 import {DEFAULT_TASK_TIME} from '../../constants/defaults';
 import {COLORS} from '../../constants/colors';
 import EditTaskModal from './EditTaskModal';
-import {ScrollView} from 'react-native';
+import {FlatList, ScrollView, View, ListRenderItem} from 'react-native';
+
+import {getMillisFromMinutes} from '../../utils/timeUtils';
+import TaskElement from './TaskElement/TaskElement';
 
 const Wrapper = styled.View`
   flex: 1;
@@ -18,12 +21,17 @@ const Wrapper = styled.View`
   padding-right: 15;
 `;
 
+const List = styled.SectionList`
+  flex: 1;
+`;
+
 const Button = styled.Pressable`
   align-items: center;
   justify-content: center;
   background-color: ${COLORS.TOMATO};
   border-radius: 29px;
   padding: 20px;
+  margin-bottom: 20px;
 `;
 
 const ButtonText = styled.Text`
@@ -31,12 +39,21 @@ const ButtonText = styled.Text`
   color: #fff;
 `;
 
+interface TaskSection {
+  data: Task[];
+  header: {
+    text: string;
+    numberOfPomodoros: number;
+    pomodoroTime: number;
+  };
+}
+
 const Tasks = () => {
   const {state, dispatch} = useContext(AppContext);
   const [todoPomodorosCount, setTodoPomodorosCount] = useState(0);
   const [completedPomodorosCount, setCompletedPomodorosCount] = useState(0);
-  const [todoTasks, setTodoTasks] = useState<Task[]>([]);
-  const [doneTasks, setDoneTasks] = useState<Task[]>([]);
+  // const [todoTasks, setTodoTasks] = useState<TaskSection>();
+  const [tasksData, setTasksData] = useState<TaskSection[]>();
   const [editTaskModalVisible, setEditTaskModalVisible] = useState(false);
 
   useEffect(() => {
@@ -56,9 +73,25 @@ const Tasks = () => {
     const done = state.tasks.filter(task => task.completedCount > 0);
     const todo = state.tasks.filter(task => task.pomodoroCount > 0);
 
-    setDoneTasks(done);
-    setTodoTasks(todo);
-  }, [state.tasks]);
+    setTasksData([
+      {
+        data: done,
+        header: {
+          text: 'Pomodoros',
+          numberOfPomodoros: todoPomodorosCount,
+          pomodoroTime: DEFAULT_TASK_TIME,
+        },
+      },
+      {
+        data: todo,
+        header: {
+          text: 'Done',
+          numberOfPomodoros: completedPomodorosCount,
+          pomodoroTime: DEFAULT_TASK_TIME,
+        },
+      },
+    ]);
+  }, [completedPomodorosCount, state.tasks, todoPomodorosCount]);
 
   const handleAddTask = useCallback(
     ({category, description}) => {
@@ -79,29 +112,71 @@ const Tasks = () => {
     [dispatch],
   );
 
+  const getNumberOfPreceedingPomodoros = useCallback(
+    (tasks: Task[], task: Task) => {
+      let count = 0;
+
+      for (let i = 0; i < tasks.length; i++) {
+        const current = tasks[i];
+        if (current.id === task.id) {
+          break;
+        }
+        count += current.pomodoroCount;
+      }
+
+      return count;
+    },
+    [],
+  );
+
   return (
-    <ScrollView>
-      <Wrapper>
-        <Button onPress={() => setEditTaskModalVisible(true)}>
-          <ButtonText>Add Task</ButtonText>
-        </Button>
-        <Heading
-          text="Pomodoros"
-          numberOfPomodoros={todoPomodorosCount}
-          pomodoroTime={DEFAULT_TASK_TIME}
-        />
-        {todoTasks.length > 0 && (
-          <TasksList tasks={todoTasks} mode={TASK_MODES.TODO} />
+    <Wrapper>
+      {/* <View> */}
+      {/* <Wrapper> */}
+      <Button onPress={() => setEditTaskModalVisible(true)}>
+        <ButtonText>Add Task</ButtonText>
+      </Button>
+      <List
+        sections={tasksData || []}
+        renderItem={({item, section}) => (
+          <TaskElement
+            mode={TASK_MODES.TODO}
+            task={item as Task}
+            numberOfPrecedingPomodors={getNumberOfPreceedingPomodoros(
+              section.data as Task[],
+              item as Task,
+            )}
+            pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
+          />
         )}
-        <Heading
-          text="Done"
-          numberOfPomodoros={completedPomodorosCount}
-          pomodoroTime={DEFAULT_TASK_TIME}
-        />
-        {doneTasks.length > 0 && (
-          <TasksList tasks={doneTasks} mode={TASK_MODES.COMPLETED} />
-        )}
-      </Wrapper>
+        keyExtractor={item => (item as Task).id}
+        ListHeaderComponent={
+          <Heading
+            text="Pomodoros"
+            numberOfPomodoros={todoPomodorosCount}
+            pomodoroTime={DEFAULT_TASK_TIME}
+          />
+        }
+      />
+
+      {/* <Heading
+            text="Pomodoros"
+            numberOfPomodoros={todoPomodorosCount}
+            pomodoroTime={DEFAULT_TASK_TIME}
+          /> */}
+      {/* {todoTasks.length > 0 && (
+            <TasksList tasks={todoTasks} mode={TASK_MODES.TODO} />
+          )} */}
+      {/* <Heading
+        text="Done"
+        numberOfPomodoros={completedPomodorosCount}
+        pomodoroTime={DEFAULT_TASK_TIME}
+      />
+      {tasksData.length > 0 && (
+        <TasksList tasks={tasksData} mode={TASK_MODES.COMPLETED} />
+      )} */}
+      {/* </Wrapper> */}
+      {/* </View> */}
       <EditTaskModal
         onSubmit={handleAddTask}
         data={{category: '', description: ''}}
@@ -110,7 +185,7 @@ const Tasks = () => {
           onRequestClose: () => setEditTaskModalVisible(false),
         }}
       />
-    </ScrollView>
+    </Wrapper>
   );
 };
 

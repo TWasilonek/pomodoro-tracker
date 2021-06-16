@@ -8,7 +8,7 @@ import {COLORS} from '../../../constants/colors';
 const Wrapper = styled.View`
   align-items: center;
   justify-content: center;
-  flex: 1;
+  flex: ${(props: {visible: boolean}) => (props.visible ? 1 : 0)};
   background-color: #fff;
 `;
 
@@ -57,6 +57,7 @@ interface EditTaskFormValues {
   description: string;
   id?: string;
 }
+
 interface Props {
   data: EditTaskFormValues;
   onSubmit: (values: EditTaskFormValues) => void;
@@ -98,7 +99,7 @@ const EditTaskForm: FunctionComponent<Props> = ({
   }, []);
 
   return (
-    <Wrapper>
+    <Wrapper visible={modalProps.visible}>
       <Modal
         animationType="slide"
         presentationStyle="overFullScreen"

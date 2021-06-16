@@ -65,8 +65,9 @@ const Home = () => {
           onTaskCounterFinish={handleTaskCounterFinish}
         />
       </TimerWrapper>
-      <Tasks />
-      <TasksWrapper />
+      <TasksWrapper>
+        <Tasks />
+      </TasksWrapper>
     </Wrapper>
   );
 };
