@@ -187,7 +187,6 @@ const TaskElement: React.FC<Props> = ({
             />
             <CategoryText>{task.category || ''}</CategoryText>
           </Category>
-
           {mode !== TASK_MODES.COMPLETED && (
             <TaskMenu
               onEditTaskClick={handleEditTaskClick}

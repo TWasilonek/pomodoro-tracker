@@ -9,6 +9,7 @@ const Wrapper = styled.View`
   justify-content: center;
   align-items: center;
   flex-direction: row;
+  margin-top: 20px;
   background-color: #fff;
 `;
 
