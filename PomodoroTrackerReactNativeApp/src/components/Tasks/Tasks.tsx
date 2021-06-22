@@ -142,12 +142,14 @@ const Tasks = () => {
   );
 
   const handleEditTaskClick = useCallback((data: Task) => {
-    setEditTaskModalVisible(true);
+    console.log('data', data);
     setEditedTask({
       id: data.id,
       category: data.category || '',
       description: data.description,
     });
+
+    setEditTaskModalVisible(true);
   }, []);
 
   const handleAddTaskClick = useCallback(() => {
@@ -184,6 +186,8 @@ const Tasks = () => {
     [],
   );
 
+  console.log('edited task', editedTask);
+
   return (
     <Wrapper>
       <Button onPress={handleAddTaskClick}>
@@ -200,6 +204,7 @@ const Tasks = () => {
               item as Task,
             )}
             pomodoroTimeInMilliseconds={getMillisFromMinutes(25)}
+            onEditTaskClick={handleEditTaskClick}
           />
         )}
         keyExtractor={item => (item as Task).id}

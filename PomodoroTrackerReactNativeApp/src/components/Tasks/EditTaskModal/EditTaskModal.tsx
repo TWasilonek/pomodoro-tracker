@@ -1,4 +1,9 @@
-import React, {FunctionComponent, useCallback, useState} from 'react';
+import React, {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import {Modal, ModalProps, Pressable} from 'react-native';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Feather';
@@ -52,6 +57,12 @@ const ErrorText = styled.Text`
   color: ${COLORS.RED};
 `;
 
+const Label = styled.Text`
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: ${COLORS.TEXT};
+`;
+
 export interface EditTaskFormValues {
   category: string;
   description: string;
@@ -72,6 +83,12 @@ const EditTaskForm: FunctionComponent<Props> = ({
   const [category, setCategory] = useState(data.category);
   const [description, setDescription] = useState(data.description);
   const [descriptionError, setDescriptionError] = useState('');
+
+  useEffect(() => {
+    setCategory(data.category);
+    setDescription(data.description);
+    setDescriptionError('');
+  }, [data]);
 
   const handleSubmit = useCallback(() => {
     if (description.trim() === '') {
@@ -114,13 +131,15 @@ const EditTaskForm: FunctionComponent<Props> = ({
             </Pressable>
           </Top>
           <Form>
+            <Label>Category</Label>
             <Input
-              placeholder="Category"
+              placeholder="Work"
               value={category}
               onChangeText={text => handleChange('category', text)}
             />
+            <Label>Task description</Label>
             <Input
-              placeholder="Task description"
+              placeholder="Make coffe"
               value={description}
               onChangeText={text => handleChange('description', text)}
             />

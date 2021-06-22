@@ -60,6 +60,27 @@ const TaskMenu: React.FC<Props> = ({
     actionSheetRef.current?.setModalVisible();
   }, []);
 
+  const handleEditTaskClick = useCallback(() => {
+    actionSheetRef.current?.setModalVisible(false);
+    handleClickCallback(onEditTaskClick);
+  }, [onEditTaskClick]);
+
+  const handleDeleteTaskClick = useCallback(() => {
+    actionSheetRef.current?.setModalVisible(false);
+    handleClickCallback(onDeleteTaskClick);
+  }, [onDeleteTaskClick]);
+
+  const handleClickCallback = (clickCb: () => void) => {
+    // FIXME: the ActionSheet modal must close before any other modal can open
+    // this timeout fixes a reac condition, when ActionSheet is still not closed open and another modal wants to open.
+    // Possible more elegant solutions:
+    //  - pass control over the ActionSheet modal to a parent Orchestrator component ? Objection: Still ugly fix...
+    //  - create a UI reducer which will take care of closing / opening modals ? Objection: Can be tricky to maintain and add another layer of complexity
+    setTimeout(() => {
+      clickCb();
+    }, 250);
+  };
+
   return (
     <Wrapper>
       <MoreButton onPress={handleTriggerButtonClick}>
@@ -86,13 +107,13 @@ const TaskMenu: React.FC<Props> = ({
             </MenuItemButton>
           </MenuItem>
           <MenuItem>
-            <MenuItemButton onPress={onEditTaskClick}>
+            <MenuItemButton onPress={handleEditTaskClick}>
               <Icon size={18} name="edit" />
               <ButtonText>Edit</ButtonText>
             </MenuItemButton>
           </MenuItem>
           <MenuItem>
-            <MenuItemButton onPress={onDeleteTaskClick}>
+            <MenuItemButton onPress={handleDeleteTaskClick}>
               <Icon size={18} name="trash" />
               <ButtonText>Delete</ButtonText>
             </MenuItemButton>

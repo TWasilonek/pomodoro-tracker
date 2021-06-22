@@ -1,23 +1,13 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Text, View, Pressable} from 'react-native';
+import {Text, Pressable} from 'react-native';
 import styled from 'styled-components/native';
 import format from 'date-fns/format';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import {AppContext} from '../../../store/AppContext';
 import {Task, TASK_ACTIONS, TASK_MODES} from '../../../store/Tasks.reducers';
-import Button from '../../../UI/Button';
 import TaskMenu from '../TaskMenu';
-import EditTaskForm from '../EditTaskModal';
 import {COLORS} from '../../../constants/colors';
-
-interface StyledProps {
-  flex?: number;
-}
-
-// const Wrapper = styled.View`
-//   margin-top: 10px;
-// `;
 
 const TaskWrapper = styled.View`
   margin-top: 22px;
@@ -89,18 +79,19 @@ interface Props {
   mode: TASK_MODES;
   pomodoroTimeInMilliseconds: number;
   numberOfPrecedingPomodors?: number;
-  onAddPomodoroClick?: (task: Task) => void;
+  // onAddPomodoroClick?: (task: Task) => void;
+  onEditTaskClick?: (task: Task) => void;
 }
 
 const TaskElement: React.FC<Props> = ({
   task,
   mode,
   pomodoroTimeInMilliseconds,
+  onEditTaskClick,
   numberOfPrecedingPomodors = 0,
 }) => {
   const {dispatch} = useContext(AppContext);
   const [endTime, setEndTIme] = useState('');
-  const [isEdited, setIsEdited] = useState(false);
 
   useEffect(() => {
     const precedingTime =
@@ -118,23 +109,8 @@ const TaskElement: React.FC<Props> = ({
   ]);
 
   const handleEditTaskClick = useCallback(() => {
-    setIsEdited(!isEdited);
-  }, [isEdited]);
-
-  const handleSubmitEditedTask = useCallback(
-    ({category, description}) => {
-      dispatch({
-        type: TASK_ACTIONS.UPDATE_TASK,
-        payload: {
-          ...task,
-          category,
-          description,
-        },
-      });
-      setIsEdited(false);
-    },
-    [dispatch, task],
-  );
+    onEditTaskClick && onEditTaskClick(task);
+  }, [onEditTaskClick, task]);
 
   const handleAddPomodoroClick = useCallback(() => {
     dispatch({
@@ -166,16 +142,6 @@ const TaskElement: React.FC<Props> = ({
 
   return (
     <>
-      {/* {isEdited ? (
-        <EditTaskForm
-          data={{
-            category: task.category || '',
-            description: task.description,
-            id: task.id,
-          }}
-          onSubmit={handleSubmitEditedTask}
-        />
-      ) : ( */}
       <TaskWrapper>
         <Top>
           <Category>
@@ -209,32 +175,7 @@ const TaskElement: React.FC<Props> = ({
           )}
           <Time>{endTime}</Time>
         </Bottom>
-        {/* <Element flex={2}>
-          {mode === TASK_MODES.COMPLETED ? (
-            <PomodorsButton disabled>
-              <Text>{task.completedCount}</Text>
-            </PomodorsButton>
-          ) : (
-            <>
-              <Time>{endTime}</Time>
-              <PomodorsButton onPress={handleAddPomodoroClick}>
-                <Text>{task.pomodoroCount}</Text>
-              </PomodorsButton>
-              <TaskMenu
-                onEditTaskClick={handleEditTaskClick}
-                onDeleteTaskClick={handleDeleteTaskClick}
-                onAddPomodoroClick={handleAddPomodoroClick}
-                onCompletePomodoroClick={handleSetCompletedClick}
-                onDeletePomodoroClick={handleDeletePomodoroClick}
-              />
-            </>
-          )}
-        </Element> */}
-        {/* <Element flex={7}>
-          <Text>{task.description}</Text>
-        </Element> */}
       </TaskWrapper>
-      {/* )} */}
     </>
   );
 };
