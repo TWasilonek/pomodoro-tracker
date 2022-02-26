@@ -1,13 +1,14 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import format from 'date-fns/format';
 
-import { AppContext } from '../../../store/AppContext';
 import { Task, TASK_ACTIONS, TASK_MODES } from '../../../store/Tasks.reducers';
 import Button from '../../../UI/Button';
 import TaskMenu from '../TaskMenu';
 import EditTaskForm from '../AddTaskForm';
 import { COLORS } from '../../../constants/colors';
+import { useAppContext } from '../../../store/AppContext';
+import useTasksActions from '../../../services/firebase/hooks/useTasksActions';
 
 interface StyledProps {
   flex?: number;
@@ -64,7 +65,8 @@ const TaskElement: React.FC<Props> = ({
   pomodoroTimeInMilliseconds,
   numberOfPrecedingPomodors = 0,
 }) => {
-  const { dispatch } = useContext(AppContext);
+  const { dispatch, state } = useAppContext();
+  const { updateTask, deleteTask } = useTasksActions();
   const [endTime, setEndTIme] = useState('');
   const [isEdited, setIsEdited] = useState(false);
 
@@ -88,47 +90,78 @@ const TaskElement: React.FC<Props> = ({
   }, [isEdited]);
 
   const handleSubmitEditedTask = useCallback(
-    ({ category, description }) => {
-      dispatch({
-        type: TASK_ACTIONS.UPDATE_TASK,
-        payload: {
+    async ({ category, description }) => {
+      if (state.auth.loggedIn) {
+        await updateTask({
           ...task,
           category,
           description,
-        },
-      });
+        });
+      } else {
+        dispatch({
+          type: TASK_ACTIONS.UPDATE_TASK,
+          payload: task,
+        });
+      }
+
       setIsEdited(false);
     },
-    [dispatch, task]
+    [dispatch, state.auth.loggedIn, task, updateTask]
   );
 
   const handleAddPomodoroClick = useCallback(() => {
-    dispatch({
-      type: TASK_ACTIONS.ADD_POMODORO,
-      payload: { id: task.id },
-    });
-  }, [dispatch, task.id]);
+    if (state.auth.loggedIn) {
+      updateTask({
+        ...task,
+        pomodoroCount: task.pomodoroCount + 1,
+      });
+    } else {
+      dispatch({
+        type: TASK_ACTIONS.ADD_POMODORO,
+        payload: { id: task.id },
+      });
+    }
+  }, [dispatch, state.auth.loggedIn, task, updateTask]);
 
   const handleDeletePomodoroClick = useCallback(() => {
-    dispatch({
-      type: TASK_ACTIONS.DELETE_POMODORO,
-      payload: { id: task.id },
-    });
-  }, [dispatch, task.id]);
+    if (state.auth.loggedIn) {
+      updateTask({
+        ...task,
+        pomodoroCount: task.pomodoroCount - 1,
+      });
+    } else {
+      dispatch({
+        type: TASK_ACTIONS.DELETE_POMODORO,
+        payload: { id: task.id },
+      });
+    }
+  }, [dispatch, state.auth.loggedIn, task, updateTask]);
 
   const handleDeleteTaskClick = useCallback(() => {
-    dispatch({
-      type: TASK_ACTIONS.DELETE_TASK,
-      payload: { id: task.id },
-    });
-  }, [dispatch, task.id]);
+    if (state.auth.loggedIn) {
+      deleteTask(task);
+    } else {
+      dispatch({
+        type: TASK_ACTIONS.DELETE_TASK,
+        payload: { id: task.id },
+      });
+    }
+  }, [deleteTask, dispatch, state.auth.loggedIn, task]);
 
   const handleSetCompletedClick = useCallback(() => {
-    dispatch({
-      type: TASK_ACTIONS.COMPLETE_POMODORO,
-      payload: { id: task.id },
-    });
-  }, [dispatch, task.id]);
+    if (state.auth.loggedIn) {
+      updateTask({
+        ...task,
+        completedCount: task.completedCount + 1,
+        pomodoroCount: task.pomodoroCount - 1,
+      });
+    } else {
+      dispatch({
+        type: TASK_ACTIONS.COMPLETE_POMODORO,
+        payload: { id: task.id },
+      });
+    }
+  }, [dispatch, state.auth.loggedIn, task, updateTask]);
 
   return (
     <Wrapper>

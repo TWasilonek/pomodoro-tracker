@@ -24,6 +24,8 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': ['error'],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-shadow': ['error'],
+    '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
     'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',

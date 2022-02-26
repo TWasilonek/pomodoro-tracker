@@ -1,19 +1,26 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { useCallback, useEffect, useState } from 'react';
 
-import { AppContext } from '../../store/AppContext';
+import { useAppContext } from '../../store/AppContext';
 import AddTaskForm from './AddTaskForm';
 import Heading from '../Heading';
 import TasksList from './TasksList';
-import { Task, TASK_ACTIONS, TASK_MODES } from '../../store/Tasks.reducers';
+import { Task, TASK_MODES } from '../../store/Tasks.reducers';
 import { DEFAULT_TASK_TIME } from '../../constants/defaults';
+import useTasksActions from '../../services/firebase/hooks/useTasksActions';
 
 const Tasks = () => {
-  const { state, dispatch } = useContext(AppContext);
+  const { state } = useAppContext();
+  const { createTask, getTasks } = useTasksActions();
   const [todoPomodorosCount, setTodoPomodorosCount] = useState(0);
   const [completedPomodorosCount, setCompletedPomodorosCount] = useState(0);
   const [todoTasks, setTodoTasks] = useState<Task[]>([]);
   const [doneTasks, setDoneTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    if (state.auth.loggedIn && state.tasks.length < 1) {
+      getTasks();
+    }
+  }, [state.auth.loggedIn, getTasks, state.tasks]);
 
   useEffect(() => {
     let todoCount = 0;
@@ -39,19 +46,16 @@ const Tasks = () => {
   const handleAddTask = useCallback(
     ({ category, description }) => {
       const newTask: Task = {
-        id: uuidv4(),
+        id: '',
         category,
         description,
         pomodoroCount: 1,
         completedCount: 0,
       };
 
-      dispatch({
-        type: TASK_ACTIONS.ADD_TASK,
-        payload: newTask,
-      });
+      createTask(newTask);
     },
-    [dispatch]
+    [createTask]
   );
 
   return (
