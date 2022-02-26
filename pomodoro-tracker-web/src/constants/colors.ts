@@ -8,4 +8,5 @@ export const COLORS = {
   GREY_LIGHT: '#CDCFD2',
   GREY_LIGHTER: '#E1E5E9',
   BLUE_GREYISH: '#C2CDD6',
+  CYAN: '#00C2FF',
 };

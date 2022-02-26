@@ -1,17 +1,16 @@
 import { ActionMap } from '../types';
+import { AppActionTypes } from './AppActionTypes';
+import { User } from './User.reducers';
 
 export interface Task {
   id: string;
   description: string;
   category?: string;
-  // FIXME: Good for quick calculations, but not feasible in the long run
-  // change to pomodoros array with 'completed' atrr
   pomodoroCount: number;
   completedCount: number;
+  user?: User;
 }
 
-// FIXME: easy to read and use but not the best architectural approach in terms of feasibility.
-// Modes might be decided by components individually based on data.
 export enum TASK_MODES {
   COMPLETED = 'completed',
   TODO = 'todo',
@@ -24,9 +23,11 @@ export enum TASK_ACTIONS {
   ADD_POMODORO = 'ADD_POMODORO',
   DELETE_POMODORO = 'DELETE_POMODORO',
   COMPLETE_POMODORO = 'COMPLETE_POMODORO',
+  SET_TASKS = 'SET_TASKS',
 }
 
 type TasksPayload = {
+  [TASK_ACTIONS.SET_TASKS]: Task[];
   [TASK_ACTIONS.ADD_TASK]: Task;
   [TASK_ACTIONS.UPDATE_TASK]: Task;
   [TASK_ACTIONS.DELETE_TASK]: { id: string };
@@ -98,8 +99,10 @@ const completePomodoro = (state: Task[], id: string) =>
     return task;
   });
 
-export const tasksReducer = (state: Task[], action: TasksActions) => {
+export const tasksReducer = (state: Task[], action: AppActionTypes) => {
   switch (action.type) {
+    case TASK_ACTIONS.SET_TASKS:
+      return [...action.payload];
     case TASK_ACTIONS.ADD_TASK:
       return addTask(state, action.payload);
     case TASK_ACTIONS.UPDATE_TASK:
