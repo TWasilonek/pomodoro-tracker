@@ -150,7 +150,7 @@ const Timer: React.FC<Props> = ({
   return (
     <Wrapper mode={mode}>
       <Clock role="timer">{formatMillisToTimer(counter)}</Clock>
-      <TaskName data-testid="task-name">{taskName}</TaskName>
+      <TaskName data-testid="task-description">{taskName}</TaskName>
       <Actions>
         {counting ? (
           <Button
