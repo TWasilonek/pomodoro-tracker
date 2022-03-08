@@ -1,18 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/colors';
-import {
-  DEFAULT_BREAK_TIME,
-  DEFAULT_TASK_TIME,
-} from '../../constants/defaults';
 import { Task } from '../../store/Tasks.reducers';
-import {
-  formatMillisToTimer,
-  getMillisFromMinutes,
-} from '../../utils/timeUtils';
+import { formatMillisToTimer } from '../../utils/timeUtils';
 
 enum TIMER_MODES {
-  TASK = 'TASK',
+  POMODORO = 'POMODORO',
   BREAK = 'BREAK',
 }
 
@@ -22,7 +15,7 @@ interface WrapperProps {
 
 const Wrapper = styled.header`
   background-color: ${(props: WrapperProps) =>
-    props.mode === TIMER_MODES.TASK ? COLORS.TOMATO : COLORS.GREEN};
+    props.mode === TIMER_MODES.POMODORO ? COLORS.TOMATO : COLORS.GREEN};
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -83,23 +76,23 @@ const Button = styled.button`
 `;
 
 interface Props {
-  taskTime?: number;
-  breakTime?: number;
+  taskTime: number;
+  breakTime: number;
   activeTask: Task | null;
-  onCompleteTaskClick: () => void;
-  onTaskCounterFinish: () => void;
+  onCompleteTaskClick?: () => void;
+  onTaskCounterFinish?: () => void;
 }
 
 const Timer: React.FC<Props> = ({
   activeTask,
-  taskTime = getMillisFromMinutes(DEFAULT_TASK_TIME),
-  breakTime = getMillisFromMinutes(DEFAULT_BREAK_TIME),
+  taskTime,
+  breakTime,
   onCompleteTaskClick,
-  onTaskCounterFinish: handleTaskCounterFinish,
+  onTaskCounterFinish,
 }) => {
   const [counter, setCounter] = useState(taskTime);
   const [counting, setCounting] = useState(false);
-  const [mode, setMode] = useState<TIMER_MODES>(TIMER_MODES.TASK);
+  const [mode, setMode] = useState<TIMER_MODES>(TIMER_MODES.POMODORO);
 
   useEffect(() => {
     if (!counting) return;
@@ -115,17 +108,17 @@ const Timer: React.FC<Props> = ({
   useEffect(() => {
     if (counter <= 0) {
       setCounting(false);
-      if (mode === TIMER_MODES.TASK) {
-        handleTaskCounterFinish();
+      if (mode === TIMER_MODES.POMODORO) {
+        onTaskCounterFinish && onTaskCounterFinish();
         setMode(TIMER_MODES.BREAK);
         setCounter(breakTime);
         setCounting(true);
       } else {
-        setMode(TIMER_MODES.TASK);
+        setMode(TIMER_MODES.POMODORO);
         setCounter(taskTime);
       }
     }
-  }, [breakTime, counter, handleTaskCounterFinish, mode, taskTime]);
+  }, [breakTime, counter, onTaskCounterFinish, mode, taskTime]);
 
   const handleStartTimerClick = useCallback(() => {
     setCounting(true);
@@ -137,17 +130,17 @@ const Timer: React.FC<Props> = ({
 
   const handleStopTimerClick = useCallback(() => {
     setCounting(false);
-    setCounter(mode === TIMER_MODES.TASK ? taskTime : breakTime);
+    setCounter(mode === TIMER_MODES.POMODORO ? taskTime : breakTime);
   }, [breakTime, mode, taskTime]);
 
   const handleCompleteTaskClick = useCallback(() => {
     setCounting(false);
     setCounter(taskTime);
 
-    if (mode === TIMER_MODES.TASK) {
-      onCompleteTaskClick();
+    if (mode === TIMER_MODES.POMODORO) {
+      onCompleteTaskClick && onCompleteTaskClick();
     } else {
-      setMode(TIMER_MODES.TASK);
+      setMode(TIMER_MODES.POMODORO);
     }
   }, [mode, onCompleteTaskClick, taskTime]);
 
@@ -156,8 +149,8 @@ const Timer: React.FC<Props> = ({
 
   return (
     <Wrapper mode={mode}>
-      <Clock>{formatMillisToTimer(counter)}</Clock>
-      <TaskName>{taskName}</TaskName>
+      <Clock role="timer">{formatMillisToTimer(counter)}</Clock>
+      <TaskName data-testid="task-name">{taskName}</TaskName>
       <Actions>
         {counting ? (
           <Button

@@ -4,6 +4,11 @@ import { useAppContext } from '../../store/AppContext';
 import { Task, TASK_ACTIONS } from '../../store/Tasks.reducers';
 import Tasks from '../../components/Tasks';
 import Timer from '../../components/Timer';
+import { getMillisFromMinutes } from '../../utils/timeUtils';
+import {
+  DEFAULT_BREAK_TIME,
+  DEFAULT_TASK_TIME,
+} from '../../constants/defaults';
 
 const Home = () => {
   const { state, dispatch } = useAppContext();
@@ -61,6 +66,8 @@ const Home = () => {
   return (
     <>
       <Timer
+        taskTime={getMillisFromMinutes(DEFAULT_TASK_TIME)}
+        breakTime={getMillisFromMinutes(DEFAULT_BREAK_TIME)}
         activeTask={activeTask}
         onCompleteTaskClick={handleCompleteTaskClick}
         onTaskCounterFinish={handleTaskCounterFinish}

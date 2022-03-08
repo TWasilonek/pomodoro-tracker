@@ -44,6 +44,12 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'no-unused-expressions': [
+      'error',
+      {
+        allowShortCircuit: true,
+      },
+    ],
   },
   settings: {
     'import/resolver': {
