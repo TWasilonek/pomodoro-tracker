@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import useTimer from './useTimer';
+import { useCountdown } from './useCountdown';
 
 jest.useFakeTimers();
 jest.spyOn(global, 'setInterval');
@@ -15,21 +15,21 @@ describe('useTimer', () => {
   });
 
   it('starts counter in stale mode', () => {
-    const { result } = renderHook(() => useTimer(60000));
+    const { result } = renderHook(() => useCountdown(60000));
 
-    expect(result.current.isRunning).toBe(false);
+    expect(result.current.isCountdownRunning).toBe(false);
     expect(result.current.counter).toBe(60000);
   });
 
-  it('startTimer starts the countdown', () => {
+  it('startCountdown starts the countdown', () => {
     jest.useFakeTimers();
 
-    const { result } = renderHook(() => useTimer(60000));
+    const { result } = renderHook(() => useCountdown(60000));
 
     act(() => {
-      result.current.startTimer();
+      result.current.startCountdown();
     });
-    expect(result.current.isRunning).toBe(true);
+    expect(result.current.isCountdownRunning).toBe(true);
 
     jest.advanceTimersByTime(1000);
     expect(result.current.counter).toBe(59000);
@@ -38,52 +38,56 @@ describe('useTimer', () => {
     expect(result.current.counter).toBe(58000);
   });
 
-  it('pauseTimer stop the countdown', () => {
+  it('pauseCountdown stop the countdown', () => {
     jest.useFakeTimers();
 
-    const { result } = renderHook(() => useTimer(60000));
+    const { result } = renderHook(() => useCountdown(60000));
 
     act(() => {
-      result.current.startTimer();
+      result.current.startCountdown();
     });
 
     jest.advanceTimersByTime(1000);
     expect(result.current.counter).toBe(59000);
-    expect(result.current.isRunning).toBe(true);
+    expect(result.current.isCountdownRunning).toBe(true);
 
     act(() => {
-      result.current.pauseTimer();
+      result.current.pauseCountdown();
     });
 
-    expect(result.current.isRunning).toBe(false);
+    expect(result.current.isCountdownRunning).toBe(false);
     expect(result.current.counter).toBe(59000);
 
     jest.advanceTimersByTime(2000);
     expect(result.current.counter).toBe(59000);
   });
 
-  it('startTimer after it was stopped resumes the countdown', () => {
+  it('startCountdown after it was stopped resumes the countdown', () => {
     jest.useFakeTimers();
 
-    const { result } = renderHook(() => useTimer(60000));
+    const { result } = renderHook(() => useCountdown(60000));
 
     act(() => {
-      result.current.startTimer();
+      result.current.startCountdown();
     });
 
     jest.advanceTimersByTime(1000);
 
     act(() => {
-      result.current.pauseTimer();
+      result.current.pauseCountdown();
     });
 
     jest.advanceTimersByTime(2000);
 
     act(() => {
-      result.current.startTimer();
+      result.current.startCountdown();
     });
 
     jest.advanceTimersByTime(1000);
     expect(result.current.counter).toBe(58000);
+  });
+
+  it.skip('resetTime stops countdonw and set counter to new time', () => {
+    // TODO:
   });
 });

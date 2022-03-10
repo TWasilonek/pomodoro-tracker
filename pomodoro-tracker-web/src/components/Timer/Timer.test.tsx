@@ -90,18 +90,11 @@ describe('Timer', () => {
         expect(screen.queryByText('Complete')).not.toBeInTheDocument();
       });
 
-      it.skip('starts the timer countdown', async () => {
-        expect(screen.getByRole('timer')).toHaveTextContent('10:00');
-        jest.advanceTimersByTime(5000);
-
-        await waitFor(() => {
-          expect(screen.getByRole('timer')).toHaveTextContent('09:55');
-          expect(setInterval).toHaveBeenCalledTimes(5);
-        });
+      it('when pomodoro ends, switches to break', () => {
+        // TODO:
       });
     });
     // TODO:
-    // it allows to start/pause/resume/complete
     // it switches between break and task states
     // it displays the current task that is in progess
     // the switches are done automatically

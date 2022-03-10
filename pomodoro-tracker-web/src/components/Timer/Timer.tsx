@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/colors';
+import { useCountdown } from '../../hooks/useCountdown';
 import { Task } from '../../store/Tasks.reducers';
 import { formatMillisToTimer } from '../../utils/timeUtils';
 
@@ -90,61 +91,62 @@ const Timer: React.FC<Props> = ({
   onCompleteTaskClick,
   onTaskCounterFinish,
 }) => {
-  const [counter, setCounter] = useState(taskTime);
-  const [counting, setCounting] = useState(false);
+  const {
+    counter,
+    isCountdownRunning,
+    startCountdown,
+    pauseCountdown,
+    resetTime,
+  } = useCountdown(taskTime);
   const [mode, setMode] = useState<TIMER_MODES>(TIMER_MODES.POMODORO);
 
   useEffect(() => {
-    // if (!counting) return;
-
-    const interval = setInterval(() => {
-      if (counting) {
-        setCounter((prevCounter) => prevCounter - 1000);
-      }
-    }, 1000);
-
-    // eslint-disable-next-line consistent-return
-    return () => clearInterval(interval);
-  }, [counting]);
-
-  useEffect(() => {
     if (counter <= 0) {
-      setCounting(false);
+      pauseCountdown();
       if (mode === TIMER_MODES.POMODORO) {
         onTaskCounterFinish && onTaskCounterFinish();
         setMode(TIMER_MODES.BREAK);
-        setCounter(breakTime);
-        setCounting(true);
+        resetTime(breakTime);
+        startCountdown();
       } else {
         setMode(TIMER_MODES.POMODORO);
-        setCounter(taskTime);
+        resetTime(taskTime);
+        startCountdown();
       }
     }
-  }, [breakTime, counter, onTaskCounterFinish, mode, taskTime]);
+  }, [
+    breakTime,
+    counter,
+    onTaskCounterFinish,
+    mode,
+    taskTime,
+    pauseCountdown,
+    resetTime,
+    startCountdown,
+  ]);
 
   const handleStartTimerClick = useCallback(() => {
-    setCounting(true);
-  }, []);
+    startCountdown();
+  }, [startCountdown]);
 
   const handlePauseTimerClick = useCallback(() => {
-    setCounting(false);
-  }, []);
+    pauseCountdown();
+  }, [pauseCountdown]);
 
   const handleStopTimerClick = useCallback(() => {
-    setCounting(false);
-    setCounter(mode === TIMER_MODES.POMODORO ? taskTime : breakTime);
-  }, [breakTime, mode, taskTime]);
+    resetTime(mode === TIMER_MODES.POMODORO ? taskTime : breakTime);
+  }, [breakTime, mode, resetTime, taskTime]);
 
   const handleCompleteTaskClick = useCallback(() => {
-    setCounting(false);
-    setCounter(taskTime);
+    pauseCountdown();
+    resetTime(taskTime);
 
     if (mode === TIMER_MODES.POMODORO) {
       onCompleteTaskClick && onCompleteTaskClick();
     } else {
       setMode(TIMER_MODES.POMODORO);
     }
-  }, [mode, onCompleteTaskClick, taskTime]);
+  }, [mode, onCompleteTaskClick, pauseCountdown, resetTime, taskTime]);
 
   const taskName =
     mode === TIMER_MODES.BREAK ? 'Break' : activeTask?.description || '';
@@ -154,7 +156,7 @@ const Timer: React.FC<Props> = ({
       <Clock role="timer">{formatMillisToTimer(counter)}</Clock>
       <TaskName data-testid="task-description">{taskName}</TaskName>
       <Actions>
-        {counting ? (
+        {isCountdownRunning ? (
           <Button
             type="button"
             onClick={handlePauseTimerClick}
@@ -171,7 +173,7 @@ const Timer: React.FC<Props> = ({
             Start
           </Button>
         )}
-        {counting ? (
+        {isCountdownRunning ? (
           <Button
             type="button"
             onClick={handleStopTimerClick}
