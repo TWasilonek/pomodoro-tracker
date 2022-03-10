@@ -95,10 +95,12 @@ const Timer: React.FC<Props> = ({
   const [mode, setMode] = useState<TIMER_MODES>(TIMER_MODES.POMODORO);
 
   useEffect(() => {
-    if (!counting) return;
+    // if (!counting) return;
 
     const interval = setInterval(() => {
-      setCounter((prevCounter) => prevCounter - 1000);
+      if (counting) {
+        setCounter((prevCounter) => prevCounter - 1000);
+      }
     }, 1000);
 
     // eslint-disable-next-line consistent-return
