@@ -1,9 +1,9 @@
 import React, {
   createContext,
-  FunctionComponent,
   useEffect,
   useReducer,
   useContext,
+  FC,
 } from 'react';
 
 import { firebaseAuth } from '../services/firebase';
@@ -19,7 +19,7 @@ export interface InitialStateType {
   auth: AuthResponse;
 }
 
-export const initialState: InitialStateType = {
+export const defaultState: InitialStateType = {
   tasks: [],
   user: null,
   auth: { loggedIn: false },
@@ -31,7 +31,7 @@ export interface AppContextType {
 }
 
 export const AppContext = createContext<AppContextType>({
-  state: initialState,
+  state: defaultState,
   dispatch: () => null,
 });
 
@@ -44,7 +44,14 @@ const mainReducer = (
   auth: authReducer(auth, action),
 });
 
-export const AppProvider: FunctionComponent = ({ children }) => {
+type Props = {
+  initialState?: InitialStateType;
+};
+
+export const AppProvider: FC<Props> = ({
+  children,
+  initialState = defaultState,
+}) => {
   const [state, dispatch] = useReducer(mainReducer, initialState);
 
   useEffect(() => {
