@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { updateTask } from '../../services/firebase/collections/tasksCollection';
 import { useAppContext } from '../../store/AppContext';
 import { Task, TASK_ACTIONS } from '../../store/Tasks.reducers';
 import Tasks from '../../components/Tasks';
@@ -9,9 +8,11 @@ import {
   DEFAULT_BREAK_TIME,
   DEFAULT_TASK_TIME,
 } from '../../constants/defaults';
+import useTasksActions from '../../services/firebase/hooks/useTasksActions';
 
 const Home = () => {
   const { state, dispatch } = useAppContext();
+  const { updateTask } = useTasksActions();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const Home = () => {
         payload: { id: activeTask.id },
       });
     }
-  }, [activeTask, dispatch, state.auth.loggedIn]);
+  }, [activeTask, dispatch, state.auth.loggedIn, updateTask]);
 
   const handleTaskCounterFinish = useCallback(() => {
     if (!activeTask) {
@@ -61,7 +62,7 @@ const Home = () => {
         payload: { id: activeTask.id },
       });
     }
-  }, [activeTask, dispatch, state.auth.loggedIn]);
+  }, [activeTask, dispatch, state.auth.loggedIn, updateTask]);
 
   return (
     <>

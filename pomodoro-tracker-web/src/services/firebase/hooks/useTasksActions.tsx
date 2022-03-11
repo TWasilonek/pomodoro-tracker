@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import isEqual from 'lodash/isEqual';
 
 import * as tasksCollection from '../collections/tasksCollection';
 import { useAppContext } from '../../../store/AppContext';
@@ -20,15 +21,17 @@ function useTasksActions() {
             id: doc.id,
           }));
         }
+
+        if (!isEqual(state.tasks, tasks)) {
+          dispatch({
+            type: TASK_ACTIONS.SET_TASKS,
+            payload: tasks,
+          });
+        }
       }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error getting tasks: ', error);
-    } finally {
-      dispatch({
-        type: TASK_ACTIONS.SET_TASKS,
-        payload: tasks,
-      });
     }
   };
 
@@ -69,15 +72,14 @@ function useTasksActions() {
         } else {
           await tasksCollection.updateTask(newTask);
         }
+        dispatch({
+          type: TASK_ACTIONS.UPDATE_TASK,
+          payload: task,
+        });
       }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('Error updating task: ', error);
-    } finally {
-      dispatch({
-        type: TASK_ACTIONS.UPDATE_TASK,
-        payload: task,
-      });
     }
   };
 

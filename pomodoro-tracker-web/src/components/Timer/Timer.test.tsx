@@ -4,10 +4,6 @@ import { getMillisFromMinutes } from '../../utils/timeUtils';
 import Timer from './Timer';
 
 describe('Timer', () => {
-  beforeAll(() => {
-    jest.useFakeTimers();
-  });
-
   describe('When started without tasks', () => {
     beforeEach(() => {
       render(
