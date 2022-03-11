@@ -22,8 +22,6 @@ describe('useTimer', () => {
   });
 
   it('startCountdown starts the countdown', () => {
-    jest.useFakeTimers();
-
     const { result } = renderHook(() => useCountdown(60000));
 
     act(() => {
@@ -39,8 +37,6 @@ describe('useTimer', () => {
   });
 
   it('pauseCountdown stop the countdown', () => {
-    jest.useFakeTimers();
-
     const { result } = renderHook(() => useCountdown(60000));
 
     act(() => {
@@ -63,8 +59,6 @@ describe('useTimer', () => {
   });
 
   it('startCountdown after it was stopped resumes the countdown', () => {
-    jest.useFakeTimers();
-
     const { result } = renderHook(() => useCountdown(60000));
 
     act(() => {
@@ -87,7 +81,21 @@ describe('useTimer', () => {
     expect(result.current.counter).toBe(58000);
   });
 
-  it.skip('resetTime stops countdonw and set counter to new time', () => {
-    // TODO:
+  it('resetTime stops countdown and set counter to new time', () => {
+    const { result } = renderHook(() => useCountdown(60000));
+
+    act(() => {
+      result.current.startCountdown();
+    });
+    jest.advanceTimersByTime(1000);
+
+    expect(result.current.counter).toBe(59000);
+
+    act(() => {
+      result.current.resetTime(10000);
+    });
+
+    expect(result.current.counter).toBe(10000);
+    expect(result.current.isCountdownRunning).toBe(false);
   });
 });

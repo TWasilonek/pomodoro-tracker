@@ -1,9 +1,7 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { getMillisFromMinutes } from '../../utils/timeUtils';
 import Timer from './Timer';
-
-// jest.spyOn(global, 'setInterval');
 
 describe('Timer', () => {
   beforeAll(() => {
@@ -56,47 +54,32 @@ describe('Timer', () => {
     });
   });
 
-  describe('Timer actions', () => {
-    describe('Clicking the Start button', () => {
-      beforeEach(() => {
-        render(
-          <Timer
-            taskTime={getMillisFromMinutes(10)}
-            breakTime={getMillisFromMinutes(1)}
-            activeTask={{
-              id: '1',
-              description: 'First pomodoro',
-              pomodoroCount: 1,
-              completedCount: 0,
-            }}
-          />
-        );
+  describe('Clicking the Start button', () => {
+    beforeEach(() => {
+      render(
+        <Timer
+          taskTime={getMillisFromMinutes(10)}
+          breakTime={getMillisFromMinutes(1)}
+          activeTask={{
+            id: '1',
+            description: 'First pomodoro',
+            pomodoroCount: 1,
+            completedCount: 0,
+          }}
+        />
+      );
 
-        userEvent.click(screen.getByText('Start'));
-      });
-
-      afterEach(() => {
-        jest.runOnlyPendingTimers();
-        jest.useRealTimers();
-      });
-
-      it('shows the "Pause" and "Break" buttons', () => {
-        expect(screen.getByText('Pause')).toBeInTheDocument();
-        expect(screen.getByText('Stop')).toBeInTheDocument();
-      });
-
-      it("doesn't show the 'Start' and 'Complete' buttons", () => {
-        expect(screen.queryByText('Start')).not.toBeInTheDocument();
-        expect(screen.queryByText('Complete')).not.toBeInTheDocument();
-      });
-
-      it('when pomodoro ends, switches to break', () => {
-        // TODO:
-      });
+      userEvent.click(screen.getByText('Start'));
     });
-    // TODO:
-    // it switches between break and task states
-    // it displays the current task that is in progess
-    // the switches are done automatically
+
+    it('shows the "Pause" and "Break" buttons', () => {
+      expect(screen.getByText('Pause')).toBeInTheDocument();
+      expect(screen.getByText('Stop')).toBeInTheDocument();
+    });
+
+    it("doesn't show the 'Start' and 'Complete' buttons", () => {
+      expect(screen.queryByText('Start')).not.toBeInTheDocument();
+      expect(screen.queryByText('Complete')).not.toBeInTheDocument();
+    });
   });
 });

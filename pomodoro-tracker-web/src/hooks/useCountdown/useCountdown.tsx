@@ -5,14 +5,17 @@ export function useCountdown(startTime: number) {
   const [isCountdownRunning, setIsCountdownRunning] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    function countDown() {
       if (isCountdownRunning) {
         setCounter((prevCounter) => prevCounter - 1000);
       }
-    }, 1000);
+    }
+    const intervalId = setInterval(countDown, 1000);
 
     // eslint-disable-next-line consistent-return
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [isCountdownRunning]);
 
   function startCountdown() {
