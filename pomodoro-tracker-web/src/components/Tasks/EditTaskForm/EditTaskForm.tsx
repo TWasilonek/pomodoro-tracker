@@ -85,7 +85,7 @@ const EditTaskForm: FunctionComponent<Props> = ({ data, onSubmit }) => {
 
   return (
     <>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} data-testid="edit-task-form">
         <Input
           type="text"
           placeholder="Category"

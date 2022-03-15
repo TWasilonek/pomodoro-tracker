@@ -5,7 +5,7 @@ import format from 'date-fns/format';
 import { Task, TASK_ACTIONS, TASK_MODES } from '../../../store/Tasks.reducers';
 import Button from '../../../UI/Button';
 import TaskMenu from '../TaskMenu';
-import EditTaskForm from '../AddTaskForm';
+import EditTaskForm from '../EditTaskForm';
 import { COLORS } from '../../../constants/colors';
 import { useAppContext } from '../../../store/AppContext';
 import useTasksActions from '../../../services/firebase/hooks/useTasksActions';
@@ -66,7 +66,8 @@ const TaskElement: React.FC<Props> = ({
   numberOfPrecedingPomodors = 0,
 }) => {
   const { dispatch, state } = useAppContext();
-  const { updateTask, deleteTask } = useTasksActions();
+  const { updateTask: firebaseUpdateTask, deleteTask: firebaseDeleteTask } =
+    useTasksActions();
   const [endTime, setEndTIme] = useState('');
   const [isEdited, setIsEdited] = useState(false);
 
@@ -91,27 +92,29 @@ const TaskElement: React.FC<Props> = ({
 
   const handleSubmitEditedTask = useCallback(
     async ({ category, description }) => {
+      const newTask = {
+        ...task,
+        category,
+        description,
+      };
+
       if (state.auth.loggedIn) {
-        await updateTask({
-          ...task,
-          category,
-          description,
-        });
+        await firebaseUpdateTask(newTask);
       } else {
         dispatch({
           type: TASK_ACTIONS.UPDATE_TASK,
-          payload: task,
+          payload: newTask,
         });
       }
 
       setIsEdited(false);
     },
-    [dispatch, state.auth.loggedIn, task, updateTask]
+    [dispatch, state.auth.loggedIn, task, firebaseUpdateTask]
   );
 
   const handleAddPomodoroClick = useCallback(() => {
     if (state.auth.loggedIn) {
-      updateTask({
+      firebaseUpdateTask({
         ...task,
         pomodoroCount: task.pomodoroCount + 1,
       });
@@ -121,11 +124,11 @@ const TaskElement: React.FC<Props> = ({
         payload: { id: task.id },
       });
     }
-  }, [dispatch, state.auth.loggedIn, task, updateTask]);
+  }, [dispatch, state.auth.loggedIn, task, firebaseUpdateTask]);
 
   const handleDeletePomodoroClick = useCallback(() => {
     if (state.auth.loggedIn) {
-      updateTask({
+      firebaseUpdateTask({
         ...task,
         pomodoroCount: task.pomodoroCount - 1,
       });
@@ -135,22 +138,22 @@ const TaskElement: React.FC<Props> = ({
         payload: { id: task.id },
       });
     }
-  }, [dispatch, state.auth.loggedIn, task, updateTask]);
+  }, [dispatch, state.auth.loggedIn, task, firebaseUpdateTask]);
 
   const handleDeleteTaskClick = useCallback(() => {
     if (state.auth.loggedIn) {
-      deleteTask(task);
+      firebaseDeleteTask(task);
     } else {
       dispatch({
         type: TASK_ACTIONS.DELETE_TASK,
         payload: { id: task.id },
       });
     }
-  }, [deleteTask, dispatch, state.auth.loggedIn, task]);
+  }, [firebaseDeleteTask, dispatch, state.auth.loggedIn, task]);
 
   const handleSetCompletedClick = useCallback(() => {
     if (state.auth.loggedIn) {
-      updateTask({
+      firebaseUpdateTask({
         ...task,
         completedCount: task.completedCount + 1,
         pomodoroCount: task.pomodoroCount - 1,
@@ -161,12 +164,13 @@ const TaskElement: React.FC<Props> = ({
         payload: { id: task.id },
       });
     }
-  }, [dispatch, state.auth.loggedIn, task, updateTask]);
+  }, [dispatch, state.auth.loggedIn, task, firebaseUpdateTask]);
 
   return (
     <Wrapper>
       {isEdited ? (
         <EditTaskForm
+          data-test
           data={{
             category: task.category || '',
             description: task.description,

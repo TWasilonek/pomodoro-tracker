@@ -14,6 +14,7 @@ The design was inspired by existing and popular applications used to follow the 
  - Automatic breaks between _pmodoros_
  - Basic sync of visible tasks when going in online mode
  - Supports both online and offline tasks and pomodoro tracking (but tasks are persistent between sessions only when logged in)
+
 ## Tech
 
  - Create React App + Typescript

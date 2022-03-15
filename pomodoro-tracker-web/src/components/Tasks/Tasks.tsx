@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import AddTaskForm from './AddTaskForm';
+import AddTaskForm from './EditTaskForm';
 import Heading from '../Heading';
 import TasksList from './TasksList';
 import { Task, TASK_MODES } from '../../store/Tasks.reducers';
