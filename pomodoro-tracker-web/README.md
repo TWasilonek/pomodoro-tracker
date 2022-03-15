@@ -1,8 +1,5 @@
 # Pomodoro App clone
 
-This is a simple clone of a Pomodoro application written
-
-
 ## Design
 
 The design was inspired by existing and popular applications used to follow the pomodoro technique. 
@@ -14,7 +11,7 @@ The design was inspired by existing and popular applications used to follow the 
 ## Features
 
  - CRUD for tasks and pomodoros
- - Signup and login with Firebase auth (Google Auth only)
+ - Signup and login with Firebase auth (Google Auth provider)
  - Automatic breaks between _pmodoros_
  - Basic sync of visible tasks when going in online mode
  - Supports both online and offline tasks and pomodoro tracking (but tasks are persistent between sessions only when logged in)
