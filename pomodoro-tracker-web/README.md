@@ -7,6 +7,10 @@ This is a simple clone of a Pomodoro application written
 
 The design was inspired by existing and popular applications used to follow the pomodoro technique. 
 
+<img src="https://i.imgur.com/em0UfnG.jpg" alt="Pomodoro view" width="200"/>
+<img src="https://i.imgur.com/h7aCkyu.jpg" alt="Task menu" width="200"/>
+<img src="https://i.imgur.com/BKtb8lk.jpg" alt="Break view" width="200" />
+
 ## Features
 
  - CRUD for tasks and pomodoros
