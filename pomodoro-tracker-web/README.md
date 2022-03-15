@@ -1,10 +1,23 @@
 # Pomodoro App clone
 
-This is a simple clone of the a Pomodoro application. 
+## Design
 
-### (Over)simplifications
+The design was inspired by existing and popular applications used to follow the pomodoro technique. 
 
-Since the purpose of this app was to play a bit with React hooks, context and Firebase integration, without getting too much into the any specific business logic details, there are some simplifications with regards to Firebase sync:
+<img src="https://i.imgur.com/em0UfnG.jpg" alt="Pomodoro view" width="200"/>
+<img src="https://i.imgur.com/h7aCkyu.jpg" alt="Task menu" width="200"/>
+<img src="https://i.imgur.com/BKtb8lk.jpg" alt="Break view" width="200" />
 
- - The app doesn't try to handle lost connections and eventual discrepancies between when the user is signed in and not
- - The logic for tasks is very simple - if the user is logged in, handle the action async through Firebase, otherwise handle it with a plain action in memory. No additional checks are made.
+## Features
+
+ - CRUD for tasks and pomodoros
+ - Signup and login with Firebase auth (Google Auth provider)
+ - Automatic breaks between _pmodoros_
+ - Basic sync of visible tasks when going in online mode
+ - Supports both online and offline tasks and pomodoro tracking (but tasks are persistent between sessions only when logged in)
+
+## Tech
+
+ - Create React App + Typescript
+ - Firebase (Auth and Firestore)
+ - State managed in React Context using the reducer pattern (no libs, just `useReducer` hook)
