@@ -3,7 +3,7 @@ import isEqual from 'lodash/isEqual';
 
 import * as tasksCollection from '../collections/tasksCollection';
 import { useAppContext } from '../../../store/AppContext';
-import { Task, TASK_ACTIONS } from '../../../store/Tasks.reducers';
+import { Task, TASK_ACTIONS } from '../../../store/tasks/Tasks.reducers';
 
 function useTasksActions() {
   const { dispatch, state } = useAppContext();

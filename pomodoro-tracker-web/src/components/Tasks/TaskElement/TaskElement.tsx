@@ -2,7 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import format from 'date-fns/format';
 
-import { Task, TASK_ACTIONS, TASK_MODES } from '../../../store/Tasks.reducers';
+import {
+  Task,
+  TASK_ACTIONS,
+  TASK_MODES,
+} from '../../../store/tasks/Tasks.reducers';
 import Button from '../../../UI/Button';
 import TaskMenu from '../TaskMenu';
 import EditTaskForm from '../EditTaskForm';

@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import AddTaskForm from './EditTaskForm';
 import Heading from '../Heading';
 import TasksList from './TasksList';
-import { Task, TASK_MODES } from '../../store/Tasks.reducers';
+import { Task, TASK_MODES } from '../../store/tasks/Tasks.reducers';
 import { DEFAULT_TASK_TIME } from '../../constants/defaults';
 import useTasksActions from '../../services/firebase/hooks/useTasksActions';
 import { useTasks } from '../../hooks/useTasks';

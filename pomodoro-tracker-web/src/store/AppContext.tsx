@@ -9,9 +9,9 @@ import React, {
 import { firebaseAuth } from '../services/firebase';
 import * as usersCollection from '../services/firebase/collections/usersCollection';
 import { AppActionTypes } from './AppActionTypes';
-import { authReducer, AuthResponse } from './Auth.reducers';
-import { Task, tasksReducer } from './Tasks.reducers';
-import { User, userReducer, USER_ACTIONS } from './User.reducers';
+import { authReducer, AuthResponse } from './auth/Auth.reducers';
+import { Task, tasksReducer } from './tasks/Tasks.reducers';
+import { User, userReducer, USER_ACTIONS } from './user/User.reducers';
 
 export interface InitialStateType {
   tasks: Task[];
@@ -65,8 +65,7 @@ export const AppProvider: FC<Props> = ({
           return;
         }
 
-        // get user
-        const userRef = await usersCollection.createUserProfileDocument(
+        const userRef = await usersCollection.updateUserProfileDocument(
           userAuth
         );
         if (userRef) {

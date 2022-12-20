@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { getMillisFromMinutes } from '../../../utils/timeUtils';
 import TaskElement from '../TaskElement/TaskElement';
-import { Task, TASK_MODES } from '../../../store/Tasks.reducers';
+import { Task, TASK_MODES } from '../../../store/tasks/Tasks.reducers';
 
 const List = styled.ul`
   list-style: none;

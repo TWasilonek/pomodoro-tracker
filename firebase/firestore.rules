@@ -2,8 +2,16 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function isOwner(userId) {
-      return request.auth != null && request.auth.uid == userId;
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function belongsTo(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isValidOwner(userId) {
+      return isAuthenticated() && belongsTo(userId);
     }
 
     // deny any access by default
@@ -12,11 +20,11 @@ service cloud.firestore {
     }
 
     match /users/{userId}/tasks/{taskId} {
-      allow read, write: if isOwner(userId);
+      allow read, write: if isValidOwner(userId);
     }
 
     match /users/{userId} {
-      allow read: if isOwner(userId);
+      allow read, update: if isValidOwner(userId);
       allow list: if false; // deny listing users
     }
   }

@@ -3,17 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.12.0",
-    "@testing-library/react": "^11.2.6",
-    "@testing-library/user-event": "^13.5.0",
-    "@testing-library/react-hooks": "^7.0.2",
-    "@types/jest": "^26.0.23",
-    "@types/lodash": "^4.14.170",
-    "@types/node": "^12.20.13",
-    "@types/react": "^17.0.5",
-    "@types/react-dom": "^17.0.5",
-    "@types/styled-components": "^5.1.9",
-    "@types/uuid": "^8.3.0",
     "date-fns": "^2.21.3",
     "firebase": "^8.6.8",
     "lodash": "^4.17.21",
@@ -25,6 +14,32 @@
     "typescript": "^4.2.4",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.2"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.12.0",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^13.5.0",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@types/jest": "^26.0.23",
+    "@types/lodash": "^4.14.170",
+    "@types/node": "^12.20.13",
+    "@types/react": "^17.0.5",
+    "@types/react-dom": "^17.0.5",
+    "@types/styled-components": "^5.1.9",
+    "@types/uuid": "^8.3.0",
+    "@testing-library/dom": "^8.11.3",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/parser": "^4.24.0",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.23.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "prettier": "2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -48,20 +63,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@testing-library/dom": "^8.11.3",
-    "@typescript-eslint/eslint-plugin": "^4.24.0",
-    "@typescript-eslint/parser": "^4.24.0",
-    "eslint": "^7.26.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-import-resolver-typescript": "^2.4.0",
-    "eslint-plugin-import": "^2.23.2",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-react": "^7.23.2",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "prettier": "2.3.0"
   }
 }

@@ -1,6 +1,6 @@
-import { ActionMap } from '../types';
-import { AppActionTypes } from './AppActionTypes';
-import { User } from './User.reducers';
+import { ActionMap } from '../../types';
+import { AppActionTypes } from '../AppActionTypes';
+import { User } from '../user/User.reducers';
 
 export interface Task {
   id: string;

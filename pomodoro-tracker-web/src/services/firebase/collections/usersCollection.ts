@@ -1,5 +1,8 @@
 import firebase, { firestore } from '../firebase';
 
+const hasData = (userData: firebase.firestore.DocumentData | undefined) =>
+  userData && userData.displayName && userData.email && userData.photoURL;
+
 const getUserDocument = async (
   uid: string
 ): Promise<firebase.firestore.DocumentReference<firebase.firestore.DocumentData> | null> => {
@@ -14,7 +17,7 @@ const getUserDocument = async (
   }
 };
 
-export const createUserProfileDocument = async (
+export const updateUserProfileDocument = async (
   user: firebase.User,
   additionalData?: any
 ) => {
@@ -25,21 +28,22 @@ export const createUserProfileDocument = async (
 
   // Go and fetch the document from that location.
   const snapshot = await userRef.get();
+  const savedUserData = snapshot.data();
 
-  if (!snapshot.exists) {
+  if (!hasData(savedUserData)) {
     const { displayName, email, photoURL } = user;
-    const createdAt = new Date();
+    const updatedAt = new Date();
     try {
       await userRef.set({
         displayName,
         email,
         photoURL,
-        createdAt,
+        updatedAt,
         ...additionalData,
       });
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error('Error creating user', error);
+      console.error('Error updating the user', error);
     }
   }
   return getUserDocument(user.uid);

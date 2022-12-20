@@ -1,6 +1,6 @@
-import firebase from '../services/firebase';
-import { ActionMap } from '../types';
-import { AppActionTypes } from './AppActionTypes';
+import firebase from '../../services/firebase';
+import { ActionMap } from '../../types';
+import { AppActionTypes } from '../AppActionTypes';
 
 export type WithUID = {
   uid: string;
