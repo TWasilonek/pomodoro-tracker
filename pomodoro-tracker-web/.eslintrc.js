@@ -36,6 +36,15 @@ module.exports = {
     'no-plusplus': 'off',
     'prefer-template': 'off',
     'import/prefer-default-export': 'off',
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: true,
+        optionalDependencies: true,
+        peerDependencies: true,
+      },
+    ],
+
     'import/extensions': [
       'error',
       'ignorePackages',

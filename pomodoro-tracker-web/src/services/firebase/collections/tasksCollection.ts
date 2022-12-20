@@ -1,6 +1,6 @@
 import omit from 'lodash/omit';
-import { Task } from '../../../store/Tasks.reducers';
-import { User } from '../../../store/User.reducers';
+import { Task } from '../../../store/tasks/Tasks.reducers';
+import { User } from '../../../store/user/User.reducers';
 import { firestore, firebaseAuth } from '../firebase';
 
 export const createTask = async (task: Task, user: User) => {

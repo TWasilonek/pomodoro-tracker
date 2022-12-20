@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useAppContext } from '../../store/AppContext';
-import { Task, TASK_ACTIONS } from '../../store/Tasks.reducers';
+import { Task, TASK_ACTIONS } from '../../store/tasks/Tasks.reducers';
 import Tasks from '../../components/Tasks';
 import Timer from '../../components/Timer';
 import { getMillisFromMinutes } from '../../utils/timeUtils';

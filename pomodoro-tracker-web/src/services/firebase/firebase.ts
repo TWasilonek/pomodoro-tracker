@@ -5,13 +5,13 @@ import 'firebase/analytics';
 import 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCRPWya_4uvvqyXBzMkPv94eekJInW1CCI',
-  authDomain: 'pomodoro-tracker-f9148.firebaseapp.com',
-  projectId: 'pomodoro-tracker-f9148',
-  storageBucket: 'pomodoro-tracker-f9148.appspot.com',
-  messagingSenderId: '90078549163',
-  appId: '1:90078549163:web:c810c7a403eac39fc593ee',
-  measurementId: 'G-HYXSTNNLFK',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUHT_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase

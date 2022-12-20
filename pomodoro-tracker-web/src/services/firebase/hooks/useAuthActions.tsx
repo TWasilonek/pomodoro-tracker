@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { firebaseAuth, signInWithGoogle, signOut } from '../index';
 import { useAppContext } from '../../../store/AppContext';
-import { AUTH_ACTIONS } from '../../../store/Auth.reducers';
+import { AUTH_ACTIONS } from '../../../store/auth/Auth.reducers';
 
 function useAuthActions() {
   const { dispatch, state } = useAppContext();

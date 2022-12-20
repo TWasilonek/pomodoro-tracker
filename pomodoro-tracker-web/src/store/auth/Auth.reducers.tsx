@@ -1,5 +1,5 @@
-import { ActionMap } from '../types';
-import { AppActionTypes } from './AppActionTypes';
+import { ActionMap } from '../../types';
+import { AppActionTypes } from '../AppActionTypes';
 
 export type AuthResponse = {
   loggedIn: boolean;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import useTasksActions from '../../services/firebase/hooks/useTasksActions';
 import { useAppContext } from '../../store/AppContext';
-import { Task } from '../../store/Tasks.reducers';
+import { Task } from '../../store/tasks/Tasks.reducers';
 
 export function useTasks() {
   const { state } = useAppContext();

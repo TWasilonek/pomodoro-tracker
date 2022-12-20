@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { COLORS } from '../../constants/colors';
 import { useCountdown } from '../../hooks/useCountdown';
-import { Task } from '../../store/Tasks.reducers';
+import { Task } from '../../store/tasks/Tasks.reducers';
 import { formatMillisToTimer } from '../../utils/timeUtils';
 
 enum TIMER_MODES {

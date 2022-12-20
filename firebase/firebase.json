@@ -3,6 +3,12 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
+  "functions": {
+    "predeploy": [
+      "cd functions && npm run build"
+    ],
+    "runtime": "nodejs16"
+  },
   "emulators": {
     "auth": {
       "port": 9099

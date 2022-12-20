@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "strict": true,
+      "moduleResolution": "node",
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "resolveJsonModule": true,
+      "outDir": "lib/"
+    },
+    "include": [
+      "*.js",
+      "**/*.js",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.d.ts",
+      ".eslintrc.js"
+    ],
+    "exclude": ["node_modules", "node_modules/**/*"]
+  }
+  
