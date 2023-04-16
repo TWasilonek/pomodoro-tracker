@@ -26,6 +26,10 @@ The design was inspired by existing and popular applications used to follow the 
 
 ## Local development
 
+### Node
+
+This project has been created with Node v16. It is recommended to use the same version to avoid any issues.
+
 ### Firebase (authentication and firebastore).
 
 If you want to run this project locally, you need to create your own Firebase project, enable the required services and setup the Firebase CLI.

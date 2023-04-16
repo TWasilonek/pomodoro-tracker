@@ -26,6 +26,10 @@ const TaskWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-top: 10px;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 const Element = styled.div`
@@ -38,6 +42,35 @@ const Element = styled.div`
 
   &:not(:last-child) {
     margin-right: 30px;
+  }
+
+  @media (max-width: 500px) {
+    width: 100%;
+
+    &:not(:last-child) {
+      margin-right: 0;
+    }
+  }
+`;
+
+const TextElement = styled(Element)`
+  word-break: break-word;
+  text-align: start;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`;
+
+const ElemTitle = styled.h4`
+  margin: 0 10px 3px 0;
+  color: ${COLORS.TEXT_LIGHT};
+  word-break: initial;
+  font-size: 12px;
+
+  @media (min-width: 501px) {
+    display: none;
   }
 `;
 
@@ -54,6 +87,17 @@ const Time = styled.p`
   font-size: 20px;
   font-weight: 700;
   color: ${COLORS.TEXT_LIGHT};
+
+  @media (max-width: 500px) {
+    margin-right: auto;
+    text-align: left;
+  }
+`;
+
+const PomodorosDone = styled.p`
+  font-size: 14px;
+  color: ${COLORS.TEXT};
+  margin: 0;
 `;
 
 interface Props {
@@ -184,16 +228,25 @@ const TaskElement: React.FC<Props> = ({
         />
       ) : (
         <TaskWrapper>
-          <Element flex={3}>{task.category || ''}</Element>
-          <Element flex={7}>{task.description}</Element>
+          <TextElement flex={3}>
+            {task.category && <ElemTitle>Category: </ElemTitle>}
+            {task.category || ''}
+          </TextElement>
+          <TextElement flex={7}>
+            <ElemTitle>Task: </ElemTitle>
+            {task.description}
+          </TextElement>
           <Element flex={2}>
             {mode === TASK_MODES.COMPLETED ? (
-              <PomodorsButton type="button" disabled>
-                {task.completedCount}
-              </PomodorsButton>
+              <PomodorosDone>
+                Pomodoros done: {task.completedCount}
+              </PomodorosDone>
             ) : (
               <>
-                <Time>{endTime}</Time>
+                <Time>
+                  <ElemTitle>Will finish at: </ElemTitle>
+                  {endTime}
+                </Time>
                 <PomodorsButton type="button" onClick={handleAddPomodoroClick}>
                   {task.pomodoroCount}
                 </PomodorsButton>

@@ -27,6 +27,10 @@ const PopupMenuWrapper = styled.div`
   border: 2px solid ${COLORS.BLUE_GREYISH};
   border-radius: 5px;
   width: 300px;
+
+  @media (max-width: 500px) {
+    width: 90vw;
+  }
 `;
 
 const Menu = styled.ul`

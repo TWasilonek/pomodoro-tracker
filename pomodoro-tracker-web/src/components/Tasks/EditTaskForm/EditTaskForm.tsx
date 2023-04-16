@@ -17,6 +17,10 @@ interface InputProps {
 const Form = styled.form`
   display: flex;
   align-items: center;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 
 const Input = styled.input`
@@ -36,6 +40,16 @@ const Input = styled.input`
   &:not(:last-child) {
     margin-right: 30px;
   }
+
+  @media (max-width: 600px) {
+    flex: 1;
+    width: 100%;
+    margin-bottom: 10px;
+
+    &:not(:last-child) {
+      margin-right: 0;
+    }
+  }
 `;
 
 const SubmitButton = styled(Button)`
@@ -43,6 +57,17 @@ const SubmitButton = styled(Button)`
   height: 48px;
   padding: 10px;
   border: 2px solid ${COLORS.BLUE_GREYISH};
+
+  @media (max-width: 600px) {
+    width: 100%;
+    background-color: ${COLORS.BLUE_GREYISH};
+    color: white;
+
+    &:disabled {
+      color: white;
+      background-color: ${COLORS.GREY_LIGHTER};
+    }
+  }
 `;
 
 interface EditTaskFormValues {

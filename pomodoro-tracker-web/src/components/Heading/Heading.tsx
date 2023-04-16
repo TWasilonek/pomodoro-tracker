@@ -28,6 +28,10 @@ const Title = styled.span`
   font-size: 26px;
   font-weight: 700;
   color: ${COLORS.TEXT};
+
+  @media (max-width: 500px) {
+    font-size: 20px;
+  }
 `;
 
 const Time = styled.span`
@@ -35,6 +39,10 @@ const Time = styled.span`
   font-size: 20px;
   font-weight: 700;
   color: ${COLORS.TEXT_LIGHT};
+
+  @media (max-width: 500px) {
+    font-size: 16px;
+  }
 `;
 
 interface Props {

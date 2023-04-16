@@ -45,6 +45,15 @@ const Actions = styled.div`
   justify-content: space-between;
   width: 70%;
   max-width: 550px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    width: 100%;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 `;
 
 const Button = styled.button`
@@ -73,6 +82,15 @@ const Button = styled.button`
     color: ${COLORS.TOMATO};
     cursor: pointer;
     transform: scale(1.05, 1.1);
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+
+    &:not(:last-child) {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
   }
 `;
 
